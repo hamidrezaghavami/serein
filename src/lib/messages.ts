@@ -3,6 +3,11 @@ export type Locale = "en" | "fa";
 export const messages = {
   skip: ["Skip to content", "رفتن به محتوای اصلی"],
   home: ["Home", "خانه"],
+  notFoundTitle: ["A little off the path.", "کمی از مسیر دور شده‌ایم."],
+  notFoundDescription: [
+    "We couldn't find this page. Find your way back to the collection.",
+    "این صفحه پیدا نشد. از اینجا به مجموعه بازگردید.",
+  ],
   shop: ["Shop", "فروشگاه"],
   story: ["Our story", "داستان ما"],
   ritual: ["The ritual", "آیین مراقبت"],

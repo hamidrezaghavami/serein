@@ -6,6 +6,9 @@ import { usePathname } from "next/navigation";
 import { products, photo } from "@/data/products";
 import { LanguageSwitch, useLanguage } from "./language-provider";
 
+const clampQuantity = (value: number) =>
+  Math.max(1, Math.min(20, Number.isFinite(value) ? Math.trunc(value) : 1));
+
 type Cart = Record<string, number>;
 type BagApi = { add: (id: string, quantity?: number) => void };
 const BagContext = createContext<BagApi>({ add: () => {} });
@@ -16,8 +19,8 @@ export function AddProduct({ id }: { id: string }) {
   const { t } = useLanguage();
   const [quantity, setQuantity] = useState(1);
   return <div className="add-to-bag">
-    <label>{t("quantity")}<input type="number" min="1" max="20" value={quantity}
-      onChange={event => setQuantity(Math.max(1, Math.min(20, Number(event.target.value) || 1)))} /></label>
+    <label>{t("quantity")}<input type="number" min="1" max="20" step="1" value={quantity}
+      onChange={event => setQuantity(clampQuantity(Number(event.target.value)))} /></label>
     <button type="button" className="button" onClick={() => add(id, quantity)}>{t("add")}</button>
   </div>;
 }
@@ -31,6 +34,8 @@ export function Storefront({ children }: { children: React.ReactNode }) {
   const [placed, setPlaced] = useState(false);
   const [subscribed, setSubscribed] = useState(false);
   const dialog = useRef<HTMLDialogElement>(null);
+  const header = useRef<HTMLElement>(null);
+  const menuButton = useRef<HTMLButtonElement>(null);
   const pathname = usePathname();
 
   useEffect(() => {
@@ -55,32 +60,55 @@ export function Storefront({ children }: { children: React.ReactNode }) {
 
   useEffect(() => { setMenu(false); }, [pathname]);
 
+  useEffect(() => {
+    if (!menu) return;
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setMenu(false);
+        menuButton.current?.focus();
+      }
+    };
+    const onPointerDown = (event: PointerEvent) => {
+      if (event.target instanceof Node && !header.current?.contains(event.target)) {
+        setMenu(false);
+      }
+    };
+    document.addEventListener("keydown", onKeyDown);
+    document.addEventListener("pointerdown", onPointerDown);
+    return () => {
+      document.removeEventListener("keydown", onKeyDown);
+      document.removeEventListener("pointerdown", onPointerDown);
+    };
+  }, [menu]);
+
   const count = Object.values(cart).reduce((sum, quantity) => sum + quantity, 0);
   const total = products.reduce((sum, item) => sum + item.price * (cart[item.id] || 0), 0);
   const open = () => {
+    setMenu(false);
     setCheckout(false);
     setPlaced(false);
     if (!dialog.current?.open) dialog.current?.showModal();
   };
   const add = (id: string, quantity = 1) => {
-    setCart(current => ({ ...current, [id]: Math.min(20, (current[id] || 0) + quantity) }));
+    if (!products.some(item => item.id === id)) return;
+    setCart(current => ({ ...current, [id]: clampQuantity((current[id] || 0) + clampQuantity(quantity)) }));
     open();
   };
   const update = (id: string, quantity: number) => setCart(current => {
     const next = { ...current };
     if (quantity <= 0) delete next[id];
-    else next[id] = Math.min(quantity, 20);
+    else next[id] = clampQuantity(quantity);
     return next;
   });
 
   return <BagContext.Provider value={{ add }}>
     <a className="skip-link" href="#content">{t("skip")}</a>
-    <header className="site-header">
+    <header ref={header} className="site-header">
       <div className="header-inner">
         <Link href="/" className="wordmark" aria-label={`SEREIN · ${t("home")}`} dir="ltr">SEREIN</Link>
-        <button type="button" className="menu-button" aria-label={t(menu ? "closeMenu" : "openMenu")}
+        <button ref={menuButton} type="button" className="menu-button" aria-label={t(menu ? "closeMenu" : "openMenu")}
           aria-expanded={menu} aria-controls="main-nav" onClick={() => setMenu(!menu)}>{menu ? "✕" : "☰"}</button>
-        <nav id="main-nav" className={`main-navigation${menu ? " is-open" : ""}`} aria-label={t("mainNav")}>
+        <nav id="main-nav" className={`main-navigation${menu ? " is-open" : ""}`} aria-label={t("mainNav")} onClick={() => setMenu(false)}>
           <Link href="/shop" aria-current={pathname === "/shop" ? "page" : undefined}>{t("shop")}</Link>
           <Link href="/us" aria-current={pathname === "/us" ? "page" : undefined}>{t("story")}</Link>
           <Link href="/#ritual" onClick={() => setMenu(false)}>{t("ritual")}</Link>
@@ -94,7 +122,7 @@ export function Storefront({ children }: { children: React.ReactNode }) {
         </div>
       </div>
     </header>
-    <div id="content">{children}</div>
+    <div id="content" tabIndex={-1}>{children}</div>
     <footer>
       <div className="footer-main">
         <div>

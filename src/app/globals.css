@@ -1666,3 +1666,36 @@ html[lang="fa"] .bag-button span {
     padding-top: 28px;
   }
 }
+/* Complete the collection and ritual reveals. */
+@media (prefers-reduced-motion: no-preference) {
+  [data-serein-reveal="card"] {
+    transition:
+      opacity 650ms ease,
+      transform 800ms cubic-bezier(0.22, 1, 0.36, 1);
+    transition-delay: var(--serein-reveal-delay, 0ms);
+  }
+
+  [data-serein-reveal="card"][data-serein-visible="false"] {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  [data-serein-reveal="card"][data-serein-visible="true"],
+  [data-serein-reveal="card"]:focus-within {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.not-found-page {
+  min-height: 55vh;
+  display: grid;
+  align-content: center;
+  justify-items: start;
+  gap: 24px;
+}
+
+.not-found-page .muted {
+  max-width: 40rem;
+  margin: 0;
+}

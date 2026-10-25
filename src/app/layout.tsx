@@ -15,7 +15,7 @@ export default async function Layout({ children }: { children: React.ReactNode }
   const cookieStore = await cookies();
   const locale = cookieStore.get("serein-language")?.value === "fa" ? "fa" : "en";
 
-  return <html lang={locale} dir={locale === "fa" ? "rtl" : "ltr"}>
+  return <html lang={locale} dir={locale === "fa" ? "rtl" : "ltr"} data-scroll-behavior="smooth">
     <head>
       <link rel="preconnect" href="https://fonts.googleapis.com" />
       <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />

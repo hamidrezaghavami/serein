@@ -11,9 +11,9 @@ export default function ProductPage({ params }: {
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = use(params);
+  const { t, number, money, product } = useLanguage();
   const original = products.find(item => item.slug === slug);
   if (!original) notFound();
-  const { t, number, money, product } = useLanguage();
   const p = product(original);
   return <main className="section product-page">
     <nav className="breadcrumb" aria-label={t("breadcrumb")}><Link href="/shop">{t("shop")}</Link><span>/</span><span>{p.name}</span></nav>

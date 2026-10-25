@@ -14,6 +14,7 @@ serein/
 │   ├── app/
 │   │   ├── layout.tsx           # Shared document layout and storefront shell
 │   │   ├── page.tsx             # Homepage
+│   │   ├── not-found.tsx        # Bilingual missing-page screen
 │   │   ├── globals.css          # Global styles and responsive design
 │   │   ├── us/
 │   │   │   └── page.tsx         # About Us page (/us)
@@ -24,7 +25,11 @@ serein/
 │   │           └── page.tsx     # Product detail pages (/products/:slug)
 │   ├── components/
 │   │   ├── storefront.tsx       # Shared header, footer, bag, and demo checkout
-│   │   └── product-card.tsx     # Product card and image hover behavior
+│   │   ├── product-card.tsx     # Product card and image hover behavior
+│   │   ├── language-provider.tsx # EN/FA translations and preference
+│   │   ├── bubble-cursor.tsx    # Custom desktop cursor
+│   │   └── motion-effects.tsx   # Accessible scroll reveals
+│   ├── lib/messages.ts         # English and Persian interface copy
 │   └── data/
 │       └── products.ts          # Fictional product catalog and image mapping
 ├── package.json
@@ -88,3 +93,15 @@ After the import, use `pnpm-lock.yaml` for dependency installs.
 - The newsletter interaction displays a local demo message; it does not submit or store the email address.
 
 All products and claims are fictional portfolio content.
+
+
+## Frontend checks
+
+```bash
+pnpm typecheck
+pnpm build
+```
+
+Before backend integration, preview both languages on desktop and mobile. Check product links, whole-number quantities, bag persistence after refresh, demo checkout, the mobile menu (including Escape), and an unknown URL. Motion follows the operating system's reduced-motion setting. To test with the alternative production bundler, use `pnpm build --webpack`.
+
+The storefront is ready for backend integration. Authentication/account screens, API loading and error states, real order storage, newsletter submission, and payment integration remain part of the next phase.

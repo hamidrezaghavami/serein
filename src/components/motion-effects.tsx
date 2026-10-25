@@ -1,17 +1,22 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 
 export default function MotionEffects() {
   const pathname = usePathname();
+  const [reducedMotion, setReducedMotion] = useState<boolean | null>(null);
 
   useEffect(() => {
-    const preference = matchMedia(
-      "(prefers-reduced-motion: reduce)"
-    );
+    const preference = matchMedia("(prefers-reduced-motion: reduce)");
+    const update = () => setReducedMotion(preference.matches);
+    update();
+    preference.addEventListener("change", update);
+    return () => preference.removeEventListener("change", update);
+  }, []);
 
-    if (preference.matches) return;
+  useEffect(() => {
+    if (reducedMotion !== false || !("IntersectionObserver" in window)) return;
 
     const managed = new Set<HTMLElement>();
     const hero = document.querySelector<HTMLElement>(".home-hero");
@@ -41,10 +46,13 @@ export default function MotionEffects() {
       }
     );
 
-    const reveal = (selector: string, type: string) => {
+    const reveal = (selector: string, type: string, stagger = false) => {
       document.querySelectorAll<HTMLElement>(selector).forEach(
-        (element) => {
+        (element, index) => {
           if (managed.has(element)) return;
+          if (stagger) {
+            element.style.setProperty("--serein-reveal-delay", `${(index % 5) * 65}ms`);
+          }
 
           managed.add(element);
           element.dataset.sereinReveal = type;
@@ -66,9 +74,11 @@ export default function MotionEffects() {
       );
 
       reveal(
-        ".section-heading, .philosophy > div, .story-section > div, .closing-section > h2, .ritual > h2",
+        ".section-heading, .philosophy > div, .story-section > div, .closing-section, .skin-banner, .ritual > h2",
         "text"
       );
+
+      reveal(".product-card, .ritual-grid > li", "card", true);
     };
 
     // Only pin the hero when its entire content fits on screen.
@@ -121,6 +131,7 @@ export default function MotionEffects() {
       for (const element of managed) {
         delete element.dataset.sereinReveal;
         delete element.dataset.sereinVisible;
+        element.style.removeProperty("--serein-reveal-delay");
       }
 
       if (hero) {
@@ -129,17 +140,8 @@ export default function MotionEffects() {
       }
     };
 
-    const changePreference = () => {
-      if (preference.matches) clear();
-    };
-
-    preference.addEventListener("change", changePreference);
-
-    return () => {
-      preference.removeEventListener("change", changePreference);
-      clear();
-    };
-  }, [pathname]);
+    return clear;
+  }, [pathname, reducedMotion]);
 
   return null;
 }

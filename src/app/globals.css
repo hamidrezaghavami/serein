@@ -1203,7 +1203,7 @@ details p {
   width: 22px;
   height: 22px;
   pointer-events: none;
-  z-index: 99999;
+  z-index: 2147483647;
   border: 1px solid rgba(106, 119, 94, 0.6);
   border-radius: 50%;
   background: rgba(184, 199, 163, 0.18);
@@ -1698,4 +1698,45 @@ html[lang="fa"] .bag-button span {
 .not-found-page .muted {
   max-width: 40rem;
   margin: 0;
+}
+/* Authentication follows SEREIN's existing ivory and charcoal palette. */
+.account-link { display: inline-flex; align-items: center; justify-content: center; gap: 7px; min-width: 36px; min-height: 44px; position: relative; }
+.account-link-label { font-size: 10px; letter-spacing: .06em; text-transform: uppercase; white-space: nowrap; }
+.account-status-dot { position: absolute; width: 5px; height: 5px; border-radius: 50%; background: #6b8255; top: 6px; inset-inline-start: 16px; }
+.auth-screen { display: grid; grid-template-columns: 1fr 1fr; align-items: center; gap: 8%; min-height: 65vh; }
+.auth-introduction h1 { max-width: 10em; }
+.auth-introduction p { max-width: 34em; }
+.auth-form-shell { min-width: 0; display: flex; justify-content: center; }
+.account-page { min-height: 65vh; }
+.account-heading { display: flex; justify-content: space-between; align-items: start; gap: 24px; margin-bottom: 50px; }
+.account-columns { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: start; }
+.account-card { border: 1px solid var(--sand); padding: 30px; min-width: 0; }
+.account-card h2 { font-size: clamp(26px, 2.5vw, 36px); }
+.profile-form { margin-top: 24px; }
+.profile-form fieldset { border: 0; padding: 0; margin: 0; display: grid; gap: 20px; min-width: 0; }
+.profile-form label { display: grid; gap: 8px; font-size: 13px; }
+.profile-form input, .profile-form textarea { font: inherit; color: inherit; width: 100%; min-width: 0; border: 1px solid var(--sand); background: transparent; border-radius: 0; padding: 12px; }
+.profile-form textarea { resize: vertical; }
+.profile-form [role="status"] { min-height: 25px; font-size: 13px; margin: 16px 0; }
+.account-error { border: 1px solid #a87863; padding: 20px; margin-bottom: 25px; }
+.account-error button { margin-top: 14px; }
+.empty-orders { margin: 30px 0; color: var(--muted); }
+.account-orders { padding: 0; list-style: none; margin: 28px 0; }
+.account-orders > li { padding: 20px 0; border-bottom: 1px solid var(--sand); }
+.account-order-heading { display: flex; justify-content: space-between; gap: 16px; font-size: 13px; }
+.account-orders .eyebrow { margin: 10px 0; font-size: 9px; }
+.account-orders ul { padding-inline-start: 20px; font-size: 13px; }
+html[lang="fa"] .account-link-label { letter-spacing: 0; }
+@media (max-width: 1100px) {
+  .account-link-label { display: none; }
+}
+@media (max-width: 700px) {
+  .header-inner { display: grid; grid-template-columns: 44px minmax(0, 1fr) auto; gap: 4px; }
+  .header-inner .wordmark { position: static; transform: none; grid-column: 2; grid-row: 1; justify-self: center; font-size: clamp(13px, 4vw, 18px); letter-spacing: .12em; }
+  .header-inner .menu-button { grid-column: 1; grid-row: 1; order: initial; }
+  .header-inner .header-actions { grid-column: 3; grid-row: 1; margin-inline-start: 0; gap: 4px; }
+  .auth-screen, .account-columns { grid-template-columns: 1fr; gap: 32px; }
+  .auth-introduction h1 { max-width: none; font-size: 34px; }
+  .account-card { padding: 22px 16px; }
+  .account-heading { flex-direction: column; margin-bottom: 32px; }
 }

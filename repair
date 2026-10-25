@@ -1,0 +1,90 @@
+from pathlib import Path
+import json
+import shutil
+
+root = Path.cwd()
+if not (root / "package.json").is_file() or not (root / "src/app/layout.tsx").is_file():
+    raise SystemExit("Run this from your SEREIN project root, not backend/ or src/.")
+
+FILES = {'src/app/account/page.tsx': 'import { AccountPanel } from "@/components/account-panel";\nexport default function AccountPage() { return <AccountPanel />; }\n', 'src/app/sign-in/[[...sign-in]]/page.tsx': 'import { Suspense } from "react";\nimport { AuthScreen } from "@/components/auth-screen";\nexport default function Page() {\n  return <Suspense fallback={<main className="section" aria-busy="true" />}><AuthScreen mode="sign-in" /></Suspense>;\n}\n', 'src/app/sign-up/[[...sign-up]]/page.tsx': 'import { Suspense } from "react";\nimport { AuthScreen } from "@/components/auth-screen";\nexport default function Page() {\n  return <Suspense fallback={<main className="section" aria-busy="true" />}><AuthScreen mode="sign-up" /></Suspense>;\n}\n', 'CLERK-INTEGRATION.md': "# SEREIN Clerk integration — Ubuntu VM\n\nThis update contains **complete versions of changed files** plus new authentication/account files. Extract its contents into your existing `serein/` project root and allow replacement. It does not include image assets, node_modules, your actual environment files, or any secret key. No database migrations are added by this update.\n\n## 1. Install from the project root\n\n```bash\ncd ~/Desktop/VScode/serein\npnpm install --frozen-lockfile\n```\n\nThis is the frontend dependency install; keep your working backend installation. If pnpm explicitly blocks a build script, approve only the package named by the installer (for example `pnpm approve-builds esbuild`) and retry. The root package.json now includes `auth:setup` and `test:frontend`.\n\n## 2. Obtain your SEREIN development secret privately\n\nOpen your existing SEREIN application's API keys page:\n\nhttps://dashboard.clerk.com/apps/app_3LCF0SEkVOuo0yNArVT4L9Nq46r/instances/ins_3LCF0SEUwlZQhqfaZMyj8HsVpyB/api-keys\n\nUse a **development Secret key** beginning with `sk_test_`. If its full value is not available, use the dashboard's **Add new key** action yourself and copy the new value when Clerk displays it. Keep it private; the setup command below asks for it in your own terminal with hidden input. Do not paste it in chat or commit it. Creating a development secret does not require upgrading the plan or enabling production.\n\nThe publishable key and verified JWT public key for the existing SEREIN application are already in the setup script. The Next.js middleware needs the development secret as well; the separate Express API continues to use public-key verification.\n\n## 3. Configure the environment\n\nFrom the root (not backend/):\n\n```bash\npnpm auth:setup\n```\n\nWhen asked, paste the development secret into your Ubuntu terminal and press Enter. Characters are intentionally not displayed. If a valid-looking development secret is already present in root `.env.local`, it is preserved. The command refuses to replace a different application's publishable key.\n\nIt updates these settings:\n\n- Root `.env.local`: Next.js Clerk publishable/secret keys, JWT public key, sign-in URLs, authorized local origins and API base URL.\n- Existing `backend/.env`: only `CLERK_JWT_KEY` and `CLERK_ISSUER`, using the validated SEREIN public key. Your working PostgreSQL URL/password is preserved.\n\nThere are no secret keys in the archive. The files produced locally are ignored by Git. Keep `http://localhost:3000` and `http://localhost:3001` in both the frontend authorized-parties setting and the backend `FRONTEND_ORIGINS`. Restart both servers after configuration.\n\n## 4. Run both servers\n\nTerminal 1, frontend:\n\n```bash\ncd ~/Desktop/VScode/serein\npnpm dev\n```\n\nTerminal 2, backend:\n\n```bash\ncd ~/Desktop/VScode/serein/backend\npnpm dev\n```\n\nOpen the frontend URL printed by Next.js (3000 or 3001) **in your Ubuntu browser**, then click the account icon. Sign in with Google or your verified email. After authentication, `/account` shows your actual API-backed profile and recent demo orders. Use **Manage email and sign-in settings** for Clerk's identity/profile controls, and **Save details** for the separate local storefront profile.\n\nCreating a first user and verifying a real Google/email sign-in should be performed by you. No test user was created in your Clerk application.\n\n## Checks\n\n```bash\npnpm typecheck\npnpm test:frontend\npnpm build\n```\n\nThe production build can also use `pnpm build --webpack`. The automated tests cover loading/guest states, bearer-token requests, saving profile fields, session privacy on sign-out, errors/retry, Farsi controls and safe configuration updates. They mock the hosted Clerk session; they do not replace the live sign-in check on your VM.\n\nIf the account page reports a connection error, check `http://localhost:4000/ready`, ensure the backend is running, and confirm the root `NEXT_PUBLIC_API_URL` ends in `/api/v1`. A `401` after login usually means the frontend and backend point to different Clerk instances or the backend public key/issuer is wrong; rerun `pnpm auth:setup` and restart both servers. A Next.js missing-secret error means the root `.env.local` still needs its real `CLERK_SECRET_KEY`.\n\n## Scope of this update\n\n- Email and Google sign-in/sign-up through the SEREIN Clerk application.\n- Protected account route and header account control.\n- English/Farsi authentication components that follow your current language switch.\n- Authenticated profile editing and recent order reads through the Express API.\n- Loading, retry and session-error states.\n\nThe existing guest cart, demo checkout submission and newsletter form remain unchanged in this authentication step. We will wire those to their existing backend endpoints next. Existing stored orders can already appear in the account history.\n\nFor deployment, set the same environment variables in the frontend host's dashboard, use its HTTPS origin in both authorization/CORS lists, and set `NEXT_PUBLIC_API_URL` to the deployed API's `/api/v1` URL. Clerk development and production instances have different keys; this update intentionally targets your current development instance.\n\n## Official references\n\n- https://clerk.com/docs/nextjs/getting-started/quickstart\n- https://clerk.com/docs/reference/nextjs/clerk-middleware\n- https://clerk.com/docs/reference/hooks/use-auth\n"}
+AUTH_CSS = '/* Authentication follows SEREIN\'s existing ivory and charcoal palette. */\n.account-link { display: inline-flex; align-items: center; justify-content: center; gap: 7px; min-width: 36px; min-height: 44px; position: relative; }\n.account-link-label { font-size: 10px; letter-spacing: .06em; text-transform: uppercase; white-space: nowrap; }\n.account-status-dot { position: absolute; width: 5px; height: 5px; border-radius: 50%; background: #6b8255; top: 6px; inset-inline-start: 16px; }\n.auth-screen { display: grid; grid-template-columns: 1fr 1fr; align-items: center; gap: 8%; min-height: 65vh; }\n.auth-introduction h1 { max-width: 10em; }\n.auth-introduction p { max-width: 34em; }\n.auth-form-shell { min-width: 0; display: flex; justify-content: center; }\n.account-page { min-height: 65vh; }\n.account-heading { display: flex; justify-content: space-between; align-items: start; gap: 24px; margin-bottom: 50px; }\n.account-columns { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: start; }\n.account-card { border: 1px solid var(--sand); padding: 30px; min-width: 0; }\n.account-card h2 { font-size: clamp(26px, 2.5vw, 36px); }\n.profile-form { margin-top: 24px; }\n.profile-form fieldset { border: 0; padding: 0; margin: 0; display: grid; gap: 20px; min-width: 0; }\n.profile-form label { display: grid; gap: 8px; font-size: 13px; }\n.profile-form input, .profile-form textarea { font: inherit; color: inherit; width: 100%; min-width: 0; border: 1px solid var(--sand); background: transparent; border-radius: 0; padding: 12px; }\n.profile-form textarea { resize: vertical; }\n.profile-form [role="status"] { min-height: 25px; font-size: 13px; margin: 16px 0; }\n.account-error { border: 1px solid #a87863; padding: 20px; margin-bottom: 25px; }\n.account-error button { margin-top: 14px; }\n.empty-orders { margin: 30px 0; color: var(--muted); }\n.account-orders { padding: 0; list-style: none; margin: 28px 0; }\n.account-orders > li { padding: 20px 0; border-bottom: 1px solid var(--sand); }\n.account-order-heading { display: flex; justify-content: space-between; gap: 16px; font-size: 13px; }\n.account-orders .eyebrow { margin: 10px 0; font-size: 9px; }\n.account-orders ul { padding-inline-start: 20px; font-size: 13px; }\nhtml[lang="fa"] .account-link-label { letter-spacing: 0; }\n@media (max-width: 1100px) { .account-link-label { display: none; } }\n@media (max-width: 700px) {\n  .header-inner { display: grid; grid-template-columns: 44px minmax(0, 1fr) auto; gap: 4px; }\n  .header-inner .wordmark { position: static; transform: none; grid-column: 2; grid-row: 1; justify-self: center; font-size: clamp(13px, 4vw, 18px); letter-spacing: .12em; }\n  .header-inner .menu-button { grid-column: 1; grid-row: 1; order: initial; }\n  .header-inner .header-actions { grid-column: 3; grid-row: 1; margin-inline-start: 0; gap: 4px; }\n  .auth-screen, .account-columns { grid-template-columns: 1fr; gap: 32px; }\n  .auth-introduction h1 { max-width: none; font-size: 34px; }\n  .account-card { padding: 22px 16px; }\n  .account-heading { flex-direction: column; margin-bottom: 32px; }\n}\n'
+DEPENDENCIES = {'@clerk/nextjs': '7.9.20', '@clerk/localizations': '4.24.1'}
+DEV_DEPENDENCIES = {'vitest': '4.0.18', '@testing-library/react': '16.3.0', '@testing-library/user-event': '14.6.1', '@testing-library/jest-dom': '6.9.1', 'jsdom': '26.1.0'}
+moves = {
+    "src/scripts/configure-auth.mjs": "scripts/configure-auth.mjs",
+    "src/tests/account.test.ts": "tests/frontend/account.test.tsx",
+    "src/tests/account.test.tsx": "tests/frontend/account.test.tsx",
+    "src/tests/api.test.ts": "tests/frontend/api.test.ts",
+    "src/tests/setup-script.test.ts": "tests/frontend/setup-script.test.ts",
+    "src/tests/setup.ts": "tests/frontend/setup.ts",
+}
+
+# Check for conflicting copies before changing anything.
+for old, new in moves.items():
+    source, target = root / old, root / new
+    if source.exists() and target.exists() and source.read_bytes() != target.read_bytes():
+        raise SystemExit(f"Both {old} and {new} exist with different contents. No files changed; review these copies first.")
+layout_path = root / "src/app/layout.tsx"
+layout = layout_path.read_text()
+if '<AuthProvider>' not in layout and '<Storefront>{children}</Storefront>' not in layout:
+    raise SystemExit("The layout differs from the reviewed version. No files changed; ask for a layout-specific update.")
+if not (root / "src/components/auth-provider.tsx").is_file():
+    raise SystemExit("The Clerk components are missing. Extract the complete integration update first.")
+package = json.loads((root / "package.json").read_text())
+if not package.get("dependencies", {}).get("next"):
+    raise SystemExit("This is not the Next.js project root.")
+
+backup = root / ".clerk-repair-backup"
+def save_original(path):
+    if path.exists():
+        destination = backup / (str(path.relative_to(root)) + ".bak")
+        if not destination.exists():
+            destination.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copyfile(path, destination)
+
+def write(name, content):
+    path = root / name
+    if path.exists() and path.read_text() == content:
+        return
+    save_original(path)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(content)
+
+for old, new in moves.items():
+    source, target = root / old, root / new
+    if source.exists():
+        save_original(source)
+        target.parent.mkdir(parents=True, exist_ok=True)
+        if not target.exists():
+            shutil.copyfile(source, target)
+        source.unlink()
+for folder in [root / "src/tests", root / "src/scripts"]:
+    if folder.is_dir() and not any(folder.iterdir()):
+        folder.rmdir()
+
+for name, text in FILES.items():
+    write(name, text)
+if 'import { AuthProvider } from "@/components/auth-provider";' not in layout:
+    layout = 'import { AuthProvider } from "@/components/auth-provider";\n' + layout
+if '<AuthProvider>' not in layout:
+    layout = layout.replace('<Storefront>{children}</Storefront>', '<AuthProvider><Storefront>{children}</Storefront></AuthProvider>', 1)
+write("src/app/layout.tsx", layout)
+
+css = (root / "src/app/globals.css").read_text()
+if "/* Authentication follows SEREIN's existing ivory and charcoal palette. */" not in css:
+    css = css.rstrip() + "\n\n" + AUTH_CSS
+css = css.replace("  z-index: 99999;", "  z-index: 2147483647;")
+write("src/app/globals.css", css)
+package.setdefault("dependencies", {}).update(DEPENDENCIES)
+package.setdefault("devDependencies", {}).update(DEV_DEPENDENCIES)
+package.setdefault("scripts", {}).update({
+    "auth:setup": "node scripts/configure-auth.mjs",
+    "test:frontend": "vitest run --config vitest.frontend.config.ts",
+})
+write("package.json", json.dumps(package, indent=2) + "\n")
+ignore = (root / ".gitignore").read_text() if (root / ".gitignore").exists() else ""
+if "/.clerk-repair-backup/" not in ignore:
+    write(".gitignore", ignore.rstrip() + "\n/.clerk-repair-backup/\n")
+print("Clerk paths, routes, provider, dependencies, commands and styles repaired.")
+print("Environment files were not read or changed. Source backups end in .bak under .clerk-repair-backup/.")
+print("Next run: pnpm install, pnpm typecheck, pnpm test:frontend")

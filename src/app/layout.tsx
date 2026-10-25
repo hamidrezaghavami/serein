@@ -1,3 +1,4 @@
+import { AuthProvider } from "@/components/auth-provider";
 import type { Metadata } from "next";
 import { cookies } from "next/headers";
 import "./globals.css";
@@ -23,7 +24,7 @@ export default async function Layout({ children }: { children: React.ReactNode }
     </head>
     <body>
       <LanguageProvider initialLocale={locale}>
-        <Storefront>{children}</Storefront>
+        <AuthProvider><Storefront>{children}</Storefront></AuthProvider>
         <BubbleCursor />
         <MotionEffects />
       </LanguageProvider>

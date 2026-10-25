@@ -7,7 +7,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "auth:setup": "node scripts/configure-auth.mjs",
+    "test:frontend": "vitest run --config vitest.frontend.config.ts"
   },
   "keywords": [],
   "author": "",
@@ -25,7 +27,9 @@
     "dotenv": "^18.0.9",
     "next": "^16.4.2",
     "react": "^19.3.1",
-    "react-dom": "^19.3.1"
+    "react-dom": "^19.3.1",
+    "@clerk/nextjs": "7.9.20",
+    "@clerk/localizations": "4.24.1"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.3.3",
@@ -34,6 +38,11 @@
     "@types/react-dom": "^19.3.0",
     "postcss": "^8.5.31",
     "tailwindcss": "^4.3.3",
-    "typescript": "^7.0.2"
+    "typescript": "^7.0.2",
+    "vitest": "4.0.18",
+    "@testing-library/react": "16.3.0",
+    "@testing-library/user-event": "14.6.1",
+    "@testing-library/jest-dom": "6.9.1",
+    "jsdom": "26.1.0"
   }
 }

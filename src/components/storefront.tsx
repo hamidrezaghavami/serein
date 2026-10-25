@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { products, photo } from "@/data/products";
 import { LanguageSwitch, useLanguage } from "./language-provider";
+import { AuthControls } from "./auth-controls";
 
 const clampQuantity = (value: number) =>
   Math.max(1, Math.min(20, Number.isFinite(value) ? Math.trunc(value) : 1));
@@ -115,6 +116,7 @@ export function Storefront({ children }: { children: React.ReactNode }) {
         </nav>
         <div className="header-actions">
           <LanguageSwitch />
+          <AuthControls />
           <button type="button" className="bag-button" onClick={open} aria-label={t("openBag", { count: number(count) })}>
             <svg width="16" height="18" viewBox="0 0 20 22" fill="none" aria-hidden="true"><path d="M3 7h14l1 13H2L3 7ZM7 8V5a3 3 0 0 1 6 0v3" stroke="currentColor" /></svg>
             <span>{t("bag")} ({number(count)})</span>

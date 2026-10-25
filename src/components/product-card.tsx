@@ -5,7 +5,7 @@ import { useBag } from "./storefront";
 import { useLanguage } from "./language-provider";
 
 export function ProductCard({ product: original }: { product: Product }) {
-  const { add } = useBag();
+  const { add, busy } = useBag();
   const { t, number, money, product } = useLanguage();
   const p = product(original);
   return <article className="product-card">
@@ -16,6 +16,6 @@ export function ProductCard({ product: original }: { product: Product }) {
     </Link>
     <div className="product-name-row"><Link href={`/products/${p.slug}`}><h3>{p.name}</h3></Link><span><bdi>{money(p.price)}</bdi></span></div>
     <p className="product-subtitle">{p.subtitle} · {p.size}</p>
-    <button type="button" className="button-outline" onClick={() => add(p.id)}>{t("add")}</button>
+    <button type="button" className="button-outline" disabled={busy} onClick={() => add(p.id)}>{t("add")}</button>
   </article>;
 }

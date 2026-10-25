@@ -5,6 +5,7 @@ A responsive skincare storefront portfolio built with Next.js, React, TypeScript
 ## Project structure
 
 ```text
+FRONTEND
 serein/
 ├── public/
 │   └── images/
@@ -35,6 +36,69 @@ serein/
 ├── package.json
 ├── pnpm-lock.yaml               # Created when dependencies are installed with pnpm
 ├── tsconfig.json
+└── README.md
+```
+```text
+BACKEND
+serein/
+├── public/
+├── src/                         # Existing Next.js frontend
+├── backend/
+│   ├── prisma/
+│   │   ├── schema.prisma        # Database models
+│   │   ├── seed.ts              # Initial product catalog
+│   │   └── migrations/          # Generated database migrations
+│   ├── src/
+│   │   ├── app.ts               # Express app and middleware
+│   │   ├── server.ts            # Starts the API server
+│   │   ├── config/
+│   │   │   ├── env.ts
+│   │   │   └── database.ts
+│   │   ├── middleware/
+│   │   │   ├── auth.ts          # Clerk authentication
+│   │   │   ├── error-handler.ts
+│   │   │   ├── not-found.ts
+│   │   │   └── validate.ts
+│   │   ├── routes/
+│   │   │   ├── index.ts
+│   │   │   ├── health.routes.ts
+│   │   │   ├── products.routes.ts
+│   │   │   ├── account.routes.ts
+│   │   │   ├── cart.routes.ts
+│   │   │   ├── orders.routes.ts
+│   │   │   └── newsletter.routes.ts
+│   │   ├── controllers/
+│   │   │   ├── products.controller.ts
+│   │   │   ├── account.controller.ts
+│   │   │   ├── cart.controller.ts
+│   │   │   ├── orders.controller.ts
+│   │   │   └── newsletter.controller.ts
+│   │   ├── services/
+│   │   │   ├── products.service.ts
+│   │   │   ├── account.service.ts
+│   │   │   ├── cart.service.ts
+│   │   │   ├── orders.service.ts
+│   │   │   └── newsletter.service.ts
+│   │   ├── schemas/             # Request validation
+│   │   │   ├── account.schema.ts
+│   │   │   ├── cart.schema.ts
+│   │   │   ├── orders.schema.ts
+│   │   │   └── newsletter.schema.ts
+│   │   └── utils/
+│   │       └── app-error.ts
+│   ├── tests/
+│   │   ├── auth.test.ts
+│   │   ├── cart.test.ts
+│   │   └── orders.test.ts
+│   ├── .env.example
+│   ├── .gitignore
+│   ├── package.json
+│   ├── pnpm-lock.yaml
+│   ├── tsconfig.json
+│   └── README.md
+├── .gitignore
+├── package.json                 # Existing frontend dependencies
+├── pnpm-lock.yaml
 └── README.md
 ```
 

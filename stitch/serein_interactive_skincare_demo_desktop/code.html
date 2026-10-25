@@ -1,0 +1,1296 @@
+<!DOCTYPE html><html class="scroll-smooth" lang="en" style=""><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<meta content="web_standard" name="shell-type">
+<title>SEREIN — A Quieter Kind of Care</title>
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&amp;family=Plus+Jakarta+Sans:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<style>
+    @layer base {
+      html, body { margin: 0; padding: 0; }
+      body { overscroll-behavior: none; }
+    }
+    ::-webkit-scrollbar { display: none; }
+    .fade-enter { opacity: 0; transform: translateY(6px); }
+    .fade-enter-active { opacity: 1; transform: translateY(0); transition: opacity 0.3s ease, transform 0.3s ease; }
+  </style>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "on-secondary-container": "#5e6758",
+            "on-error-container": "#93000a",
+            "inverse-surface": "#31312c",
+            "on-secondary": "#ffffff",
+            "on-tertiary-container": "#9c9283",
+            "surface-dim": "#dcdad3",
+            "primary-container": "#292d29",
+            "secondary-container": "#dce6d2",
+            "error": "#ba1a1a",
+            "surface-container-lowest": "#ffffff",
+            "surface-container-low": "#f6f3ec",
+            "secondary-fixed": "#dce6d2",
+            "surface-container-high": "#ebe8e1",
+            "on-tertiary-fixed": "#211b11",
+            "secondary-fixed-dim": "#c0cab7",
+            "on-surface-variant": "#444844",
+            "primary-fixed-dim": "#c4c7c1",
+            "tertiary-fixed": "#ede1d0",
+            "on-primary": "#ffffff",
+            "primary": "#151815",
+            "on-secondary-fixed-variant": "#40493b",
+            "inverse-primary": "#c4c7c1",
+            "surface-variant": "#e5e2db",
+            "background": "#fcf9f2",
+            "on-tertiary": "#ffffff",
+            "on-secondary-fixed": "#151e12",
+            "on-error": "#ffffff",
+            "inverse-on-surface": "#f3f0e9",
+            "on-tertiary-fixed-variant": "#4d463a",
+            "tertiary-fixed-dim": "#d1c5b5",
+            "tertiary-container": "#322b20",
+            "tertiary": "#1c170d",
+            "secondary": "#586152",
+            "surface-container": "#f1eee7",
+            "primary-fixed": "#e0e3dd",
+            "error-container": "#ffdad6",
+            "on-primary-fixed": "#191d19",
+            "surface-bright": "#fcf9f2",
+            "surface-tint": "#5b5f5b",
+            "on-primary-container": "#91948f",
+            "surface-container-highest": "#e5e2db",
+            "outline": "#757873",
+            "on-surface": "#1c1c18",
+            "on-primary-fixed-variant": "#444843",
+            "outline-variant": "#c5c7c2",
+            "on-background": "#1c1c18",
+            "surface": "#fcf9f2"
+          },
+          borderRadius: {
+            DEFAULT: "0.25rem",
+            lg: "0.5rem",
+            xl: "0.75rem",
+            full: "9999px"
+          },
+          spacing: {
+            "space-sm": "0.5rem",
+            gutter: "1.5rem",
+            "space-md": "1rem",
+            margin: "1.25rem",
+            "margin-tablet": "2.5rem",
+            "space-xl": "3.5rem",
+            "space-xs": "0.25rem",
+            "margin-desktop": "4.5rem",
+            "gutter-desktop": "2.5rem",
+            "space-lg": "2rem"
+          },
+          fontFamily: {
+            display: ["Newsreader", "serif"],
+            "headline-lg": ["Newsreader", "serif"],
+            "headline-md": ["Newsreader", "serif"],
+            "headline-sm": ["Newsreader", "serif"],
+            "body-lg": ["Plus Jakarta Sans", "sans-serif"],
+            "body-md": ["Plus Jakarta Sans", "sans-serif"],
+            "body-sm": ["Plus Jakarta Sans", "sans-serif"],
+            "label-lg": ["Plus Jakarta Sans", "sans-serif"],
+            "label-md": ["Plus Jakarta Sans", "sans-serif"],
+            "label-sm": ["Plus Jakarta Sans", "sans-serif"]
+          },
+          fontSize: {
+            display: ["56px", { lineHeight: "64px", letterSpacing: "-0.02em", fontWeight: "400" }],
+            "headline-lg": ["40px", { lineHeight: "48px", letterSpacing: "-0.01em", fontWeight: "400" }],
+            "headline-md": ["28px", { lineHeight: "36px", fontWeight: "400" }],
+            "headline-sm": ["22px", { lineHeight: "30px", fontWeight: "400" }],
+            "body-lg": ["17px", { lineHeight: "28px", fontWeight: "400" }],
+            "body-md": ["15px", { lineHeight: "24px", fontWeight: "400" }],
+            "body-sm": ["13px", { lineHeight: "20px", fontWeight: "400" }],
+            "label-lg": ["13px", { lineHeight: "18px", letterSpacing: "0.06em", fontWeight: "500" }],
+            "label-md": ["11px", { lineHeight: "16px", letterSpacing: "0.08em", fontWeight: "600" }],
+            "label-sm": ["10px", { lineHeight: "14px", letterSpacing: "0.1em", fontWeight: "600" }]
+          }
+        }
+      }
+    };
+  </script>
+</head>
+<body class="bg-surface font-body-md text-on-surface antialiased selection:bg-secondary-fixed selection:text-on-secondary-fixed min-h-screen flex flex-col justify-between">
+<!-- GLOBAL NOTIFICATION BANNER / TOAST CONTAINER -->
+<div class="fixed bottom-6 right-6 z-50 pointer-events-none flex flex-col gap-2" id="toast-container"></div>
+<!-- HEADER -->
+<header class="fixed top-0 left-0 right-0 z-40 bg-[#F5F2EB]/95 backdrop-blur-md border-b border-[#D8CCBC]/40 transition-all">
+<div class="h-20 w-full px-gutter md:px-margin-tablet lg:px-margin-desktop flex items-center justify-between max-w-7xl mx-auto">
+<div class="flex items-center gap-space-xl">
+<a class="font-headline-sm text-headline-sm tracking-[0.28em] uppercase text-primary font-normal select-none transition-opacity hover:opacity-75" href="javascript:void(0)" onclick="navigateTo('home')">
+          SEREIN
+        </a>
+<nav class="hidden sm:flex items-center gap-space-lg">
+<button class="nav-item font-label-md text-label-md uppercase tracking-[0.14em] text-on-surface-variant hover:text-on-surface transition-colors py-space-xs" data-nav="shop" onclick="navigateTo('shop')" type="button">
+            Shop
+          </button>
+<button class="nav-item font-label-md text-label-md uppercase tracking-[0.14em] text-on-surface-variant hover:text-on-surface transition-colors py-space-xs" data-nav="story" onclick="scrollToSectionOrHome('brand-story')" type="button">
+            Our Story
+          </button>
+<button class="nav-item font-label-md text-label-md uppercase tracking-[0.14em] text-on-surface-variant hover:text-on-surface transition-colors py-space-xs" data-nav="ritual" onclick="scrollToSectionOrHome('ritual')" type="button">
+            The Ritual
+          </button>
+</nav>
+</div>
+<div class="flex items-center gap-space-md">
+<button aria-label="Open shopping bag" class="flex items-center gap-space-xs font-label-md text-label-md uppercase tracking-[0.12em] text-on-surface hover:text-primary transition-colors py-space-xs px-2 rounded hover:bg-black/5" onclick="toggleDrawer(true)" type="button">
+<span class="material-symbols-outlined text-[19px] font-light">shopping_bag</span>
+<span class="">Bag (<span id="bag-count" class="">0</span>)</span>
+</button>
+</div>
+</div>
+</header>
+<!-- MAIN VIEW CONTAINER -->
+<main class="w-full pt-20 bg-surface flex-grow min-h-[calc(100vh-80px)]">
+<!-- VIEW 1: HOME -->
+<div class="page-view flex-col w-full flex" id="view-home">
+<!-- HERO SECTION (EDITORIAL FULL-WIDTH UNBOXED) -->
+<section class="w-full relative overflow-hidden bg-[#F5F2EB]">
+<!-- Desktop overlay container -->
+<div class="relative w-full max-w-[1440px] mx-auto min-h-[620px] lg:min-h-[700px] flex flex-col lg:flex-row items-center">
+<!-- Background Editorial Image -->
+<div class="absolute inset-0 w-full h-full pointer-events-none hidden lg:block">
+<img alt="SEREIN calm natural radiance" class="w-full h-full object-cover object-right" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDnyPUtlOKsGaUeXbCniW6hpOYho8JdaIu7anfM29KXAwGdCceSl30W1lLZ0MqrEk9lYYy5bCdNR4CQY1MrEH-hQmDHADNZyp5NTOoeaZ7SDF-NhUf6mGqVU9ymVC0G_CIIRx7czpgVS2kKffI1PXTGREwC4Bwn1w2VGRPPQVAOSx-FE83A6XDsVnhfBeSDKqaWSH4a99GwPd48YVDTQmKz8gHByVXGJd6ZoznA1ODEd6FDtkc5ufTgyzFMZwwPlr5gBw">
+</div>
+<!-- Left Content Column -->
+<div class="relative z-10 w-full lg:w-1/2 px-gutter md:px-margin-tablet lg:px-margin-desktop py-16 sm:py-20 lg:py-28 flex flex-col justify-center items-start">
+<span class="font-label-md text-label-md uppercase tracking-[0.24em] text-on-surface-variant/75 mb-space-sm select-none">
+              INTRODUCING SEREIN
+            </span>
+<h1 class="font-display text-[42px] sm:text-[56px] lg:text-[62px] text-primary leading-[1.08] tracking-tight font-normal">
+              A quieter kind<br> of care.
+            </h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant font-normal leading-relaxed max-w-md mt-space-md">
+              Thoughtfully simple skincare. A daily moment to slow down.
+            </p>
+<div class="mt-space-lg flex flex-col items-start gap-space-sm">
+<button class="inline-flex items-center justify-center px-9 py-4 bg-primary text-surface font-label-md text-label-md uppercase tracking-[0.18em] transition-all hover:bg-primary/90 focus:outline-none" onclick="navigateTo('shop')" type="button">
+                Shop the collection
+              </button>
+<span class="font-label-sm text-label-sm uppercase tracking-[0.14em] text-outline mt-space-xs select-none">
+                5 considered formulations
+              </span>
+</div>
+</div>
+<!-- Mobile Image Container (below text on smaller viewports, unboxed) -->
+<div class="w-full lg:hidden block">
+<img alt="SEREIN calm natural radiance" class="w-full h-[420px] object-cover object-top" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDnyPUtlOKsGaUeXbCniW6hpOYho8JdaIu7anfM29KXAwGdCceSl30W1lLZ0MqrEk9lYYy5bCdNR4CQY1MrEH-hQmDHADNZyp5NTOoeaZ7SDF-NhUf6mGqVU9ymVC0G_CIIRx7czpgVS2kKffI1PXTGREwC4Bwn1w2VGRPPQVAOSx-FE83A6XDsVnhfBeSDKqaWSH4a99GwPd48YVDTQmKz8gHByVXGJd6ZoznA1ODEd6FDtkc5ufTgyzFMZwwPlr5gBw">
+</div>
+</div>
+</section>
+<!-- COLLECTION PREVIEW SECTION -->
+<section class="w-full bg-[#FAF8F5] py-space-xl lg:py-28 border-t border-b border-[#D8CCBC]/35" id="home-collection">
+<div class="w-full px-gutter md:px-margin-tablet lg:px-margin-desktop max-w-7xl mx-auto">
+<div class="flex flex-col md:flex-row md:items-end justify-between mb-space-xl gap-space-sm">
+<div>
+<span class="font-label-md text-label-md uppercase tracking-[0.2em] text-secondary block mb-space-xs">
+                THE FORMULAS
+              </span>
+<h2 class="font-headline-lg text-headline-lg text-primary tracking-tight font-normal">
+                Your daily essentials.
+              </h2>
+</div>
+<button class="font-label-md text-label-md uppercase tracking-[0.14em] text-primary hover:text-secondary flex items-center gap-1 group text-left" onclick="navigateTo('shop')">
+              View All Formulas <span class="transition-transform group-hover:translate-x-1">→</span>
+</button>
+</div>
+<!-- 5-Product Grid -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6" id="home-product-grid">
+        <div class="group flex flex-col bg-surface p-4 border border-[#D8CCBC]/35 hover:border-[#D8CCBC] transition-colors">
+          <div onclick="navigateToDetail('toner')" class="relative w-full aspect-square bg-[#F0ECE1]/60 flex items-center justify-center overflow-hidden mb-4 cursor-pointer">
+            <span class="absolute top-2.5 left-2.5 font-label-sm text-label-sm tracking-widest text-outline select-none">
+              01
+            </span>
+            <img alt="Balancing Toner" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAGrVA3jOBuIxMasskGt_eYBJgIbxLbn_EWi_lKqlclz8OUAP7646kG6wv1rmf4maZVnzwOnxFmiHfLZhj70e2E_pYRMULBl3WKlZS1fmpHsEnsY7AffUcD4S7gSKwjxjcOe9pNcd6IyRPF6AErGlhKfnneZxfWzwRUIKJgo7pkV9Oeb27Y_bHaPhwTh8HlGsHV8x5Wz1_ODz28R2nCIGPx2xZ58jch2V8NP0O1IfS4iDySWk7Jz7wbJa9H_jVii6aTpw">
+          </div>
+          <div class="flex flex-col flex-grow justify-between">
+            <div onclick="navigateToDetail('toner')" class="cursor-pointer">
+              <div class="flex items-baseline justify-between gap-2">
+                <h3 class="font-headline-sm text-headline-sm text-primary group-hover:opacity-80 transition-opacity">Balancing Toner</h3>
+                <span class="font-label-lg text-label-lg text-primary font-medium">$34</span>
+              </div>
+              <p class="font-body-sm text-body-sm text-on-surface-variant mt-1">Clarifying Liquid • 150 mL</p>
+            </div>
+            <button onclick="addToBag('toner'); toggleDrawer(true);" class="w-full mt-4 py-2.5 px-3 border border-[#292D29]/25 hover:border-[#292D29] font-label-md text-label-md uppercase tracking-[0.16em] text-primary bg-transparent hover:bg-primary hover:text-surface transition-all select-none focus:outline-none" type="button">
+              Add to bag
+            </button>
+          </div>
+        </div>
+      
+        <div class="group flex flex-col bg-surface p-4 border border-[#D8CCBC]/35 hover:border-[#D8CCBC] transition-colors">
+          <div onclick="navigateToDetail('moisturizer')" class="relative w-full aspect-square bg-[#F0ECE1]/60 flex items-center justify-center overflow-hidden mb-4 cursor-pointer">
+            <span class="absolute top-2.5 left-2.5 font-label-sm text-label-sm tracking-widest text-outline select-none">
+              02
+            </span>
+            <img alt="Daily Moisturizer" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDdwomQpN-zf88FPY9D5Cye1JIT9SZzdMS3SN9wjFkXxSLIUfEJiWJhihGBv9A7nVdcf-Tdw7rqRCYRm2ykHA1HGyRnogCZCcfaDmpIkpzeyFjvnmFLuFsL0NJRcgYJDsy26aTO8LN4I1GVspzVsFoJs7k4ggPO3vIkhEutouFo7u0kEapxxoNyH7qlD1mnGfjs_zx56PZdewMs_EYf2GwcNKAee4r1CqDaXAAtHxNsxVkacE8Kb8IaVd3GlCyIwuerPA">
+          </div>
+          <div class="flex flex-col flex-grow justify-between">
+            <div onclick="navigateToDetail('moisturizer')" class="cursor-pointer">
+              <div class="flex items-baseline justify-between gap-2">
+                <h3 class="font-headline-sm text-headline-sm text-primary group-hover:opacity-80 transition-opacity">Daily Moisturizer</h3>
+                <span class="font-label-lg text-label-lg text-primary font-medium">$42</span>
+              </div>
+              <p class="font-body-sm text-body-sm text-on-surface-variant mt-1">Nourishing Cream • 50 mL</p>
+            </div>
+            <button onclick="addToBag('moisturizer'); toggleDrawer(true);" class="w-full mt-4 py-2.5 px-3 border border-[#292D29]/25 hover:border-[#292D29] font-label-md text-label-md uppercase tracking-[0.16em] text-primary bg-transparent hover:bg-primary hover:text-surface transition-all select-none focus:outline-none" type="button">
+              Add to bag
+            </button>
+          </div>
+        </div>
+      
+        <div class="group flex flex-col bg-surface p-4 border border-[#D8CCBC]/35 hover:border-[#D8CCBC] transition-colors">
+          <div onclick="navigateToDetail('serum')" class="relative w-full aspect-square bg-[#F0ECE1]/60 flex items-center justify-center overflow-hidden mb-4 cursor-pointer">
+            <span class="absolute top-2.5 left-2.5 font-label-sm text-label-sm tracking-widest text-outline select-none">
+              03
+            </span>
+            <img alt="Still Serum" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBh40gkzu217HwcbWFTS4TKdC3IoEPqQjxFjTQtn1WXbiadaGMmUy7p7tgNXbJAITW8zbLSZ7lqC27QbM1ZuZ-XO3OxlJ-_zOJVn5_CcVFGslFp8IbzcVXnfvkCfSHk8BrlxonRbmh2rlj4NR4aE5mhCUTy0S3aTbuX0KU992P0J1-uh4nXG0MZValG-VIP2aJ6OVCooKdd8fn1JLAVqjR9iDVcK7fUqJ2oAINVYD24YOh1aVrxRc39OpB6b8dQa5UEiQ">
+          </div>
+          <div class="flex flex-col flex-grow justify-between">
+            <div onclick="navigateToDetail('serum')" class="cursor-pointer">
+              <div class="flex items-baseline justify-between gap-2">
+                <h3 class="font-headline-sm text-headline-sm text-primary group-hover:opacity-80 transition-opacity">Still Serum</h3>
+                <span class="font-label-lg text-label-lg text-primary font-medium">$46</span>
+              </div>
+              <p class="font-body-sm text-body-sm text-on-surface-variant mt-1">Hydrating Serum • 30 mL</p>
+            </div>
+            <button onclick="addToBag('serum'); toggleDrawer(true);" class="w-full mt-4 py-2.5 px-3 border border-[#292D29]/25 hover:border-[#292D29] font-label-md text-label-md uppercase tracking-[0.16em] text-primary bg-transparent hover:bg-primary hover:text-surface transition-all select-none focus:outline-none" type="button">
+              Add to bag
+            </button>
+          </div>
+        </div>
+      
+        <div class="group flex flex-col bg-surface p-4 border border-[#D8CCBC]/35 hover:border-[#D8CCBC] transition-colors">
+          <div onclick="navigateToDetail('cleanser')" class="relative w-full aspect-square bg-[#F0ECE1]/60 flex items-center justify-center overflow-hidden mb-4 cursor-pointer">
+            <span class="absolute top-2.5 left-2.5 font-label-sm text-label-sm tracking-widest text-outline select-none">
+              04
+            </span>
+            <img alt="Gentle Cleanser" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBA_tVj18ckqaAtVrbPxm4h-dkwgS397SfUGJAmbpq5sxUmVGy49rkXJFojPzmrbeJSC0cu8_sDgk1oKDZS5s1jH7qSUAaGGpIa_3v1jcz6d6EDOHDU4NtIe6egxpPAM1UX6ugC9J9-nSi8mqzm2XPu1p4JWXGDJjhtRiYRyuDiB3CPe6Jd0iQsUQ5TK5noNPvA-5lddhgxEilUR_Vm2bcJbUwNIK0VDXURv4NDTQWu7dX4p0jGlp_xlLjgyWymsidpQA">
+          </div>
+          <div class="flex flex-col flex-grow justify-between">
+            <div onclick="navigateToDetail('cleanser')" class="cursor-pointer">
+              <div class="flex items-baseline justify-between gap-2">
+                <h3 class="font-headline-sm text-headline-sm text-primary group-hover:opacity-80 transition-opacity">Gentle Cleanser</h3>
+                <span class="font-label-lg text-label-lg text-primary font-medium">$28</span>
+              </div>
+              <p class="font-body-sm text-body-sm text-on-surface-variant mt-1">Balancing Wash • 100 mL</p>
+            </div>
+            <button onclick="addToBag('cleanser'); toggleDrawer(true);" class="w-full mt-4 py-2.5 px-3 border border-[#292D29]/25 hover:border-[#292D29] font-label-md text-label-md uppercase tracking-[0.16em] text-primary bg-transparent hover:bg-primary hover:text-surface transition-all select-none focus:outline-none" type="button">
+              Add to bag
+            </button>
+          </div>
+        </div>
+      
+        <div class="group flex flex-col bg-surface p-4 border border-[#D8CCBC]/35 hover:border-[#D8CCBC] transition-colors">
+          <div onclick="navigateToDetail('eye-contour')" class="relative w-full aspect-square bg-[#F0ECE1]/60 flex items-center justify-center overflow-hidden mb-4 cursor-pointer">
+            <span class="absolute top-2.5 left-2.5 font-label-sm text-label-sm tracking-widest text-outline select-none">
+              05
+            </span>
+            <img alt="Eye Contour" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBgbShmj_A6cXwEceDyQcTXXBk19-ZJ-opRPi3-hNZe1Jyx-NM4j-tX76MAVbDQ_rjsFKtrfCobevJrA1eAyNkXlFzBtklUvh2mqN6CnZHhAtYsAu4iJoQieqDrm8XEXq7_7NRER7kJVkfNSUQWLLuTj5xrjAdIFcEAF5l0hylec7ySglnbX5NJEHq9FVOKP8ZwHCE1B2Fs0JWieWwiXkRIgN-UcUy76WPsJW3BoIa_2nVIPRVxLJAADgUNnCcTuyKyeQ">
+          </div>
+          <div class="flex flex-col flex-grow justify-between">
+            <div onclick="navigateToDetail('eye-contour')" class="cursor-pointer">
+              <div class="flex items-baseline justify-between gap-2">
+                <h3 class="font-headline-sm text-headline-sm text-primary group-hover:opacity-80 transition-opacity">Eye Contour</h3>
+                <span class="font-label-lg text-label-lg text-primary font-medium">$32</span>
+              </div>
+              <p class="font-body-sm text-body-sm text-on-surface-variant mt-1">Smoothing Balm • 15 mL</p>
+            </div>
+            <button onclick="addToBag('eye-contour'); toggleDrawer(true);" class="w-full mt-4 py-2.5 px-3 border border-[#292D29]/25 hover:border-[#292D29] font-label-md text-label-md uppercase tracking-[0.16em] text-primary bg-transparent hover:bg-primary hover:text-surface transition-all select-none focus:outline-none" type="button">
+              Add to bag
+            </button>
+          </div>
+        </div>
+      </div>
+</div>
+</section>
+<!-- BRAND STORY SECTION (EDITORIAL UNBOXED) -->
+<section class="w-full px-gutter md:px-margin-tablet lg:px-margin-desktop py-space-xl lg:py-32 bg-surface" id="brand-story">
+<div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-gutter lg:gap-16 items-center">
+<div class="lg:col-span-6 flex justify-center">
+<div class="relative w-full max-w-[500px] aspect-[4/5] overflow-hidden bg-surface-container-low">
+<img alt="SEREIN Founder in calm natural morning sunlight" class="w-full h-full object-cover object-center" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCHaL2t8Nj5NEVcFU4YOOXTzQOeIJAMxKe158uLS9NqgqEFB6rvtYd0-rqYTWUKPMhv4bFEeDpXls7AOye_xp1pYFYjeEeDmHp0FgD7_5uOdgzpSKGuxeZucAkQzIt8K1wJQVJ8ug8cXlX5RiqV1gx9hRoHALy5hP4kYNu9zPckQeVzRWTr5tVlEorI0jeb-IhiQ7iJEatHCTErR2eXzuPpN0BwJvlo1fxD1CDONt2iWBj6z76Y_EZWGrzCS4KtkuBAWg">
+</div>
+</div>
+<div class="lg:col-span-6 flex flex-col justify-center mt-8 lg:mt-0 lg:pl-4">
+<span class="font-label-md text-label-md uppercase tracking-[0.24em] text-secondary mb-space-xs block select-none">
+              PHILOSOPHY
+            </span>
+<h2 class="font-headline-lg text-[36px] sm:text-headline-lg text-primary font-normal tracking-tight leading-[1.15]">
+              Less noise.<br>More ritual.
+            </h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant mt-space-md leading-relaxed font-normal max-w-lg">
+              A considered collection of everyday essentials, made for moments of care. We stripped away excess ingredients, synthetic perfumes, and rushed routines to create five balanced formulas that restore calm to your skin and your morning.
+            </p>
+<div class="mt-space-lg">
+<button class="inline-flex items-center gap-2 font-label-md text-label-md uppercase tracking-[0.2em] font-semibold text-primary pb-1 border-b border-primary hover:opacity-70 transition-opacity" onclick="navigateTo('shop')" type="button">
+                Discover SEREIN <span class="">→</span>
+</button>
+</div>
+</div>
+</div>
+</section>
+<!-- THE RITUAL SECTION -->
+<section class="w-full bg-[#FAF8F5] py-space-xl lg:py-28 border-t border-[#D8CCBC]/35" id="ritual">
+<div class="w-full px-gutter md:px-margin-tablet lg:px-margin-desktop max-w-7xl mx-auto">
+<div class="max-w-xl mb-space-xl">
+<span class="font-label-md text-label-md uppercase tracking-[0.2em] text-secondary block mb-space-xs">
+              A THOUGHTFUL SEQUENCE
+            </span>
+<h2 class="font-headline-lg text-headline-lg text-primary tracking-tight font-normal">
+              Find your daily rhythm.
+            </h2>
+<p class="font-body-md text-body-md text-on-surface-variant mt-space-xs">
+              Designed to layer weightlessly in five intentional steps.
+            </p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-5 gap-4 relative">
+<!-- Step 1 -->
+<div class="flex flex-col bg-surface p-6 border border-[#D8CCBC]/40 relative cursor-pointer hover:border-primary/50 transition-colors" onclick="navigateToDetail('cleanser')">
+<div class="flex items-center justify-between mb-6">
+<span class="font-label-sm text-label-sm uppercase tracking-[0.2em] text-secondary">STEP 01</span>
+<span class="font-label-sm text-label-sm tracking-wider text-outline">ID 04</span>
+</div>
+<h4 class="font-headline-sm text-headline-sm text-primary mb-1">Cleanse</h4>
+<span class="font-label-md text-label-md text-on-surface-variant/80 uppercase tracking-wider mb-4">Gentle Cleanser</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
+                Purify without stripping the moisture barrier.
+              </p>
+<div class="hidden md:block absolute -right-3 top-1/2 -translate-y-1/2 text-outline/60 text-sm z-10 select-none pointer-events-none">→</div>
+</div>
+<!-- Step 2 -->
+<div class="flex flex-col bg-surface p-6 border border-[#D8CCBC]/40 relative cursor-pointer hover:border-primary/50 transition-colors" onclick="navigateToDetail('toner')">
+<div class="flex items-center justify-between mb-6">
+<span class="font-label-sm text-label-sm uppercase tracking-[0.2em] text-secondary">STEP 02</span>
+<span class="font-label-sm text-label-sm tracking-wider text-outline">ID 01</span>
+</div>
+<h4 class="font-headline-sm text-headline-sm text-primary mb-1">Tone</h4>
+<span class="font-label-md text-label-md text-on-surface-variant/80 uppercase tracking-wider mb-4">Balancing Toner</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
+                Clarify pores and restore optimal pH.
+              </p>
+<div class="hidden md:block absolute -right-3 top-1/2 -translate-y-1/2 text-outline/60 text-sm z-10 select-none pointer-events-none">→</div>
+</div>
+<!-- Step 3 -->
+<div class="flex flex-col bg-surface p-6 border border-[#D8CCBC]/40 relative cursor-pointer hover:border-primary/50 transition-colors" onclick="navigateToDetail('serum')">
+<div class="flex items-center justify-between mb-6">
+<span class="font-label-sm text-label-sm uppercase tracking-[0.2em] text-secondary">STEP 03</span>
+<span class="font-label-sm text-label-sm tracking-wider text-outline">ID 03</span>
+</div>
+<h4 class="font-headline-sm text-headline-sm text-primary mb-1">Treat</h4>
+<span class="font-label-md text-label-md text-on-surface-variant/80 uppercase tracking-wider mb-4">Still Serum</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
+                Deep hydration with hyaluronic moisture.
+              </p>
+<div class="hidden md:block absolute -right-3 top-1/2 -translate-y-1/2 text-outline/60 text-sm z-10 select-none pointer-events-none">→</div>
+</div>
+<!-- Step 4 -->
+<div class="flex flex-col bg-surface p-6 border border-[#D8CCBC]/40 relative cursor-pointer hover:border-primary/50 transition-colors" onclick="navigateToDetail('moisturizer')">
+<div class="flex items-center justify-between mb-6">
+<span class="font-label-sm text-label-sm uppercase tracking-[0.2em] text-secondary">STEP 04</span>
+<span class="font-label-sm text-label-sm tracking-wider text-outline">ID 02</span>
+</div>
+<h4 class="font-headline-sm text-headline-sm text-primary mb-1">Moisturize</h4>
+<span class="font-label-md text-label-md text-on-surface-variant/80 uppercase tracking-wider mb-4">Daily Moisturizer</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
+                Seal in nourishment with light barrier defense.
+              </p>
+<div class="hidden md:block absolute -right-3 top-1/2 -translate-y-1/2 text-outline/60 text-sm z-10 select-none pointer-events-none">→</div>
+</div>
+<!-- Step 5 -->
+<div class="flex flex-col bg-surface p-6 border border-[#D8CCBC]/40 relative cursor-pointer hover:border-primary/50 transition-colors" onclick="navigateToDetail('eye-contour')">
+<div class="flex items-center justify-between mb-6">
+<span class="font-label-sm text-label-sm uppercase tracking-[0.2em] text-secondary">STEP 05</span>
+<span class="font-label-sm text-label-sm tracking-wider text-outline">ID 05</span>
+</div>
+<h4 class="font-headline-sm text-headline-sm text-primary mb-1">Eye care</h4>
+<span class="font-label-md text-label-md text-on-surface-variant/80 uppercase tracking-wider mb-4">Eye Contour</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
+                Soothe fatigue and smooth delicate skin.
+              </p>
+</div>
+</div>
+</div>
+</section>
+</div>
+<!-- VIEW 2: DEDICATED SHOP -->
+<div class="page-view hidden flex-col w-full py-space-lg lg:py-16 px-gutter md:px-margin-tablet lg:px-margin-desktop max-w-7xl mx-auto" id="view-shop">
+<!-- Breadcrumb & Header -->
+<div class="mb-8 border-b border-[#D8CCBC]/40 pb-6">
+<div class="flex items-center gap-2 font-label-sm text-label-sm uppercase tracking-[0.12em] text-outline mb-2">
+<button class="hover:text-primary" onclick="navigateTo('home')">Home</button>
+<span class="">/</span>
+<span class="text-primary font-medium">Shop</span>
+</div>
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+<div>
+<h1 class="font-headline-lg text-headline-lg text-primary tracking-tight">The Collection</h1>
+<p class="font-body-md text-on-surface-variant mt-1">Five considered formulations designed for daily balance.</p>
+</div>
+<!-- Sorting -->
+<div class="flex items-center gap-2 self-start md:self-auto">
+<label class="font-label-sm text-label-sm uppercase tracking-wider text-outline" for="shop-sort">Sort:</label>
+<select class="bg-surface-container-low border border-[#D8CCBC]/60 font-body-sm text-body-sm text-primary py-1.5 px-3 rounded focus:ring-1 focus:ring-primary focus:outline-none" id="shop-sort" onchange="renderShopProducts()">
+<option value="default">Featured</option>
+<option value="price-asc">Price: Low to High</option>
+<option value="price-desc">Price: High to Low</option>
+</select>
+</div>
+</div>
+</div>
+<!-- Category Filter Tabs -->
+<div class="flex items-center gap-2 overflow-x-auto pb-4 mb-8 border-b border-[#D8CCBC]/30">
+<button class="category-btn active px-4 py-2 font-label-md text-label-md uppercase tracking-[0.14em] transition-all bg-primary text-surface" data-cat="all" onclick="setCategoryFilter('all')">All</button>
+<button class="category-btn px-4 py-2 font-label-md text-label-md uppercase tracking-[0.14em] transition-all bg-surface-container text-on-surface-variant hover:text-primary" data-cat="cleanse" onclick="setCategoryFilter('cleanse')">Cleanse</button>
+<button class="category-btn px-4 py-2 font-label-md text-label-md uppercase tracking-[0.14em] transition-all bg-surface-container text-on-surface-variant hover:text-primary" data-cat="tone" onclick="setCategoryFilter('tone')">Tone</button>
+<button class="category-btn px-4 py-2 font-label-md text-label-md uppercase tracking-[0.14em] transition-all bg-surface-container text-on-surface-variant hover:text-primary" data-cat="treat" onclick="setCategoryFilter('treat')">Treat</button>
+<button class="category-btn px-4 py-2 font-label-md text-label-md uppercase tracking-[0.14em] transition-all bg-surface-container text-on-surface-variant hover:text-primary" data-cat="moisturize" onclick="setCategoryFilter('moisturize')">Moisturize</button>
+<button class="category-btn px-4 py-2 font-label-md text-label-md uppercase tracking-[0.14em] transition-all bg-surface-container text-on-surface-variant hover:text-primary" data-cat="eye-care" onclick="setCategoryFilter('eye-care')">Eye Care</button>
+</div>
+<!-- Shop Products Grid -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8" id="shop-product-grid">
+<!-- Rendered by JS -->
+</div>
+</div>
+<!-- VIEW 3: PRODUCT DETAIL VIEW -->
+<div class="page-view hidden flex-col w-full py-space-lg lg:py-16 px-gutter md:px-margin-tablet lg:px-margin-desktop max-w-7xl mx-auto" id="view-product-detail">
+<div class="mb-8 flex items-center justify-between border-b border-[#D8CCBC]/40 pb-4">
+<div class="flex items-center gap-2 font-label-sm text-label-sm uppercase tracking-[0.12em] text-outline">
+<button class="hover:text-primary" onclick="navigateTo('home')">Home</button>
+<span class="">/</span>
+<button class="hover:text-primary" onclick="navigateTo('shop')">Shop</button>
+<span class="">/</span>
+<span class="text-primary font-medium" id="pdp-breadcrumb">Balancing Toner</span>
+</div>
+<button class="font-label-md text-label-md uppercase tracking-[0.14em] text-on-surface-variant hover:text-primary flex items-center gap-1" onclick="navigateTo('shop')">
+          ← Back to Shop
+        </button>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-start mb-16">
+<!-- Left: Image -->
+<div class="lg:col-span-6 bg-[#F0ECE1]/50 p-6 md:p-10 border border-[#D8CCBC]/35 flex items-center justify-center">
+<div class="relative w-full aspect-square max-w-[480px] overflow-hidden">
+<span class="absolute top-2 left-2 font-label-sm text-label-sm tracking-widest text-outline select-none" id="pdp-index">01</span>
+<img alt="Product detail" class="w-full h-full object-cover" id="pdp-image">
+</div>
+</div>
+<!-- Right: Detail Info -->
+<div class="lg:col-span-6 flex flex-col justify-start">
+<span class="font-label-sm text-label-sm uppercase tracking-[0.2em] text-secondary mb-2" id="pdp-ritual-step">Step 02 — Tone</span>
+<h1 class="font-headline-lg text-headline-lg text-primary tracking-tight" id="pdp-title">Balancing Toner</h1>
+<div class="flex items-baseline gap-4 mt-2 mb-4">
+<span class="font-headline-sm text-headline-sm text-primary font-normal" id="pdp-price">$34</span>
+<span class="font-body-md text-on-surface-variant" id="pdp-subtitle-size">Clarifying Liquid • 150 mL</span>
+</div>
+<p class="font-body-lg text-body-lg text-on-surface-variant leading-relaxed mb-8" id="pdp-desc">
+            A soothing clarifying liquid that balances and conditions skin barrier following daily cleansing.
+          </p>
+<!-- Add to Bag Row -->
+<div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 pt-4 border-t border-[#D8CCBC]/40 mb-10">
+<!-- Quantity Stepper -->
+<div class="flex items-center justify-between border border-[#292D29]/30 h-14 px-4 w-full sm:w-36 bg-surface">
+<button class="text-primary hover:text-secondary text-lg font-light w-8 text-center select-none" onclick="adjustPDPQty(-1)" type="button">−</button>
+<span class="font-body-md text-primary font-medium" id="pdp-qty">1</span>
+<button class="text-primary hover:text-secondary text-lg font-light w-8 text-center select-none" onclick="adjustPDPQty(1)" type="button">+</button>
+</div>
+<!-- Add Button -->
+<button class="flex-grow h-14 bg-primary text-surface font-label-md text-label-md uppercase tracking-[0.18em] transition-all hover:bg-primary/90 focus:outline-none flex items-center justify-center gap-2" id="pdp-add-btn" onclick="addCurrentProductToBag()" type="button">
+<span class="material-symbols-outlined text-[18px]">shopping_bag</span>
+<span class="">Add to bag</span>
+</button>
+</div>
+<!-- Accordions -->
+<div class="border-t border-[#D8CCBC]/40 divide-y divide-[#D8CCBC]/30">
+<!-- Usage Accordion -->
+<div class="py-4">
+<button class="w-full flex items-center justify-between text-left font-label-md text-label-md uppercase tracking-[0.16em] text-primary focus:outline-none py-1" onclick="toggleAccordion('usage')">
+<span class="">Usage &amp; Ritual</span>
+<span class="material-symbols-outlined text-sm transition-transform" id="acc-icon-usage">expand_more</span>
+</button>
+<div class="hidden pt-3 text-body-md text-on-surface-variant leading-relaxed" id="acc-content-usage">
+<p id="pdp-usage" class="">Sweep across clean face and neck with hands or organic cotton pad morning and evening.</p>
+</div>
+</div>
+<!-- Ingredients Accordion -->
+<div class="py-4">
+<button class="w-full flex items-center justify-between text-left font-label-md text-label-md uppercase tracking-[0.16em] text-primary focus:outline-none py-1" onclick="toggleAccordion('ingredients')">
+<span class="">Ingredients</span>
+<span class="material-symbols-outlined text-sm transition-transform" id="acc-icon-ingredients">expand_more</span>
+</button>
+<div class="hidden pt-3 text-body-sm text-on-surface-variant font-mono leading-relaxed break-words" id="acc-content-ingredients">
+<p id="pdp-ingredients" class="">Aqua, Camellia Sinensis Leaf Extract, Niacinamide, Glycerin, Sodium Hyaluronate, Panthenol, Phenoxyethanol.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- PDP EDITORIAL APPLICATION RITUAL SPOTLIGHT -->
+<section class="mt-8 pt-12 border-t border-[#D8CCBC]/35 bg-[#FAF8F5]/80 p-8 lg:p-12">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+<div class="lg:col-span-5 flex justify-center">
+<div class="w-full max-w-[420px] aspect-[4/5] overflow-hidden bg-surface-container">
+<img alt="The Application Ritual — serum texture smooth against bare skin" class="w-full h-full object-cover object-center" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDUaSAjmJh-Y1rLpaxaJN8Un76GYFX-38ODjDmHWiYhgQcNK4sVHmJkUdj37q6mo7AjlpVbIq03-prnTmOfoVIrP0Y0RSiW35mczaPePWJuUzqs-gdqOwcvr-JFDS3u--4aiNIKtztEth3I4MkbDii_lEWigYe_cYy3Dv3_wv6h1eQLUzslVIATxamdMbzoNLNkohyIWtRg01XqSYXBDQfqyemzJymXfRCNDv5vee-ZrG9MrmxAUQnf03WF-XoZfAPR1A">
+</div>
+</div>
+<div class="lg:col-span-7 flex flex-col justify-center">
+<span class="font-label-md text-label-md uppercase tracking-[0.22em] text-secondary mb-2 block">The Application Ritual</span>
+<h2 class="font-headline-lg text-[32px] sm:text-headline-lg text-primary tracking-tight font-normal mb-4">
+            Sensory weightlessness on clean skin.
+          </h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant leading-relaxed mb-4">
+            Warm 3–4 drops between fingertips. Press gently into cleansed, damp skin morning and evening. Allow the botanical moisture barrier to absorb before applying Daily Moisturizer.
+          </p>
+<p class="font-body-md text-body-md text-on-surface-variant/85 leading-relaxed mb-6">
+            Formulated without synthetic silicones or heavy films, each drop bonds instantly with natural sebum, enhancing cellular moisture retention while imparting an unhurried, dewy glow.
+          </p>
+<div class="flex items-center gap-6 pt-4 border-t border-[#D8CCBC]/30">
+<div>
+<span class="block font-headline-sm text-headline-sm text-primary">100%</span>
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-outline">Cruelty-free &amp; Vegan</span>
+</div>
+<div class="w-px h-8 bg-[#D8CCBC]/40"></div>
+<div>
+<span class="block font-headline-sm text-headline-sm text-primary">0%</span>
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-outline">Synthetic Perfume</span>
+</div>
+<div class="w-px h-8 bg-[#D8CCBC]/40"></div>
+<div>
+<span class="block font-headline-sm text-headline-sm text-primary">pH 5.4</span>
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-outline">Skin Optimal</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+</div>
+<!-- VIEW 4: CHECKOUT -->
+<div class="page-view hidden flex-col w-full py-space-lg lg:py-16 px-gutter md:px-margin-tablet lg:px-margin-desktop max-w-5xl mx-auto" id="view-checkout">
+<div class="mb-8">
+<button class="font-label-sm text-label-sm uppercase tracking-[0.14em] text-outline hover:text-primary mb-2 flex items-center gap-1" onclick="navigateTo('shop')">
+          ← Return to shopping
+        </button>
+<h1 class="font-headline-lg text-headline-lg text-primary tracking-tight">Checkout</h1>
+</div>
+<!-- Demo Notification Banner -->
+<div class="bg-secondary-container/60 border border-secondary/30 p-4 mb-8 flex items-start gap-3">
+<span class="material-symbols-outlined text-secondary text-xl">info</span>
+<div>
+<p class="font-label-md text-label-md uppercase tracking-[0.12em] text-on-secondary-container font-semibold">Demo Mode</p>
+<p class="font-body-sm text-body-sm text-on-secondary-container mt-0.5">Demo checkout — no payment will be collected. Simulated experience.</p>
+</div>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
+<!-- Customer Details (Prefilled) -->
+<div class="lg:col-span-7 bg-surface p-6 sm:p-8 border border-[#D8CCBC]/40 space-y-6">
+<div>
+<h3 class="font-headline-sm text-headline-sm text-primary mb-1">Shipping Details</h3>
+<p class="font-body-sm text-outline">Simulated customer information</p>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+<div>
+<label class="block font-label-sm text-label-sm uppercase tracking-wider text-outline mb-1">Full Name</label>
+<input class="w-full bg-[#FAF8F5] border border-[#D8CCBC]/60 font-body-sm text-primary p-3 rounded select-none cursor-not-allowed" readonly="" type="text" value="Eleanor Vance">
+</div>
+<div>
+<label class="block font-label-sm text-label-sm uppercase tracking-wider text-outline mb-1">Email Address</label>
+<input class="w-full bg-[#FAF8F5] border border-[#D8CCBC]/60 font-body-sm text-primary p-3 rounded select-none cursor-not-allowed" readonly="" type="email" value="eleanor.vance@example.com">
+</div>
+</div>
+<div>
+<label class="block font-label-sm text-label-sm uppercase tracking-wider text-outline mb-1">Shipping Address</label>
+<input class="w-full bg-[#FAF8F5] border border-[#D8CCBC]/60 font-body-sm text-primary p-3 rounded select-none cursor-not-allowed" readonly="" type="text" value="742 Evergreen Terrace, Apt 4B">
+</div>
+<div class="grid grid-cols-3 gap-4">
+<div>
+<label class="block font-label-sm text-label-sm uppercase tracking-wider text-outline mb-1">City</label>
+<input class="w-full bg-[#FAF8F5] border border-[#D8CCBC]/60 font-body-sm text-primary p-3 rounded select-none cursor-not-allowed" readonly="" type="text" value="Portland">
+</div>
+<div>
+<label class="block font-label-sm text-label-sm uppercase tracking-wider text-outline mb-1">State</label>
+<input class="w-full bg-[#FAF8F5] border border-[#D8CCBC]/60 font-body-sm text-primary p-3 rounded select-none cursor-not-allowed" readonly="" type="text" value="OR">
+</div>
+<div>
+<label class="block font-label-sm text-label-sm uppercase tracking-wider text-outline mb-1">Postal Code</label>
+<input class="w-full bg-[#FAF8F5] border border-[#D8CCBC]/60 font-body-sm text-primary p-3 rounded select-none cursor-not-allowed" readonly="" type="text" value="97201">
+</div>
+</div>
+<div class="pt-4 border-t border-[#D8CCBC]/30">
+<h4 class="font-headline-sm text-[18px] text-primary mb-2">Delivery Method</h4>
+<div class="flex items-center justify-between p-3 border border-primary bg-[#FAF8F5]">
+<div class="flex items-center gap-2">
+<span class="w-2.5 h-2.5 rounded-full bg-primary"></span>
+<span class="font-body-md text-primary font-medium">Standard Complimentary Shipping</span>
+</div>
+<span class="font-label-md text-label-md uppercase tracking-wider text-secondary font-semibold">Free</span>
+</div>
+</div>
+<button class="w-full py-4 bg-primary text-surface font-label-md text-label-md uppercase tracking-[0.18em] transition-all hover:bg-primary/90 focus:outline-none" onclick="placeDemoOrder()" type="button">
+            Place Demo Order
+          </button>
+</div>
+<!-- Order Summary Column -->
+<div class="lg:col-span-5 bg-[#FAF8F5] p-6 border border-[#D8CCBC]/40">
+<h3 class="font-headline-sm text-headline-sm text-primary mb-4 pb-2 border-b border-[#D8CCBC]/40">Order Summary</h3>
+<div class="space-y-4 mb-6 max-h-[360px] overflow-y-auto pr-1" id="checkout-items-list">
+<!-- Dynamic checkout items -->
+</div>
+<div class="border-t border-[#D8CCBC]/40 pt-4 space-y-2">
+<div class="flex justify-between font-body-md text-on-surface-variant">
+<span class="">Subtotal</span>
+<span class="font-medium text-primary" id="checkout-subtotal">$0</span>
+</div>
+<div class="flex justify-between font-body-md text-on-surface-variant">
+<span class="">Shipping</span>
+<span class="text-secondary uppercase font-medium">Complimentary</span>
+</div>
+<div class="flex justify-between font-headline-sm text-headline-sm text-primary pt-3 border-t border-[#D8CCBC]/40">
+<span class="">Total</span>
+<span id="checkout-total" class="">$0</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- VIEW 5: ORDER CONFIRMATION -->
+<div class="page-view hidden flex-col w-full py-space-xl lg:py-24 px-gutter md:px-margin-tablet lg:px-margin-desktop max-w-3xl mx-auto text-center" id="view-order-confirmation">
+<div class="w-16 h-16 rounded-full bg-secondary-container text-secondary flex items-center justify-center mx-auto mb-6">
+<span class="material-symbols-outlined text-3xl">check</span>
+</div>
+<span class="font-label-md text-label-md uppercase tracking-[0.24em] text-secondary mb-2 block">Order Placed</span>
+<h1 class="font-headline-lg text-headline-lg text-primary mb-3">Thank you for your order.</h1>
+<p class="font-body-lg text-on-surface-variant max-w-md mx-auto mb-6">
+        Your demo ritual has been prepared. A confirmation email was sent to <strong class="text-primary font-medium">eleanor.vance@example.com</strong>.
+      </p>
+<div class="inline-block bg-[#FAF8F5] border border-[#D8CCBC]/50 px-6 py-3 font-mono text-sm text-primary mb-8 tracking-wider">
+        Reference: <span class="font-bold" id="conf-order-id">#SRN-84920</span>
+</div>
+<!-- Placed Items Recap -->
+<div class="bg-surface p-6 border border-[#D8CCBC]/40 text-left mb-8 max-w-lg mx-auto">
+<h4 class="font-headline-sm text-[18px] text-primary mb-3 pb-2 border-b border-[#D8CCBC]/30">Items in this shipment</h4>
+<div class="space-y-3" id="conf-items-list">
+<!-- Populated from placed order -->
+</div>
+</div>
+<div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+<button class="w-full sm:w-auto px-8 py-3.5 bg-primary text-surface font-label-md text-label-md uppercase tracking-[0.16em] hover:bg-primary/90 transition-all" onclick="navigateTo('shop')">
+          Return to Shop
+        </button>
+<button class="w-full sm:w-auto px-8 py-3.5 border border-[#292D29]/40 text-primary font-label-md text-label-md uppercase tracking-[0.16em] hover:bg-[#FAF8F5] transition-all" onclick="navigateTo('home')">
+          Return Home
+        </button>
+</div>
+</div>
+</main>
+<!-- SHOPPING BAG DRAWER OVERLAY -->
+<div class="fixed inset-0 bg-black/40 z-50 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-300" id="drawer-backdrop" onclick="toggleDrawer(false)"></div>
+<!-- SHOPPING BAG DRAWER -->
+<aside class="fixed top-0 right-0 bottom-0 w-full max-w-md bg-[#FCF9F2] z-50 shadow-2xl border-l border-[#D8CCBC]/50 flex flex-col transform translate-x-full transition-transform duration-300 ease-in-out" id="drawer">
+<!-- Header -->
+<div class="h-20 px-6 border-b border-[#D8CCBC]/40 flex items-center justify-between">
+<div class="flex items-center gap-2">
+<h3 class="font-headline-sm text-headline-sm text-primary">Your Bag</h3>
+<span class="font-label-sm text-label-sm text-outline tracking-wider">(<span id="drawer-item-count" class="">0</span>)</span>
+</div>
+<button aria-label="Close bag" class="p-2 text-on-surface-variant hover:text-primary transition-colors focus:outline-none" onclick="toggleDrawer(false)">
+<span class="material-symbols-outlined text-2xl font-light">close</span>
+</button>
+</div>
+<!-- Drawer Content (Items or Empty State) -->
+<div class="flex-grow overflow-y-auto p-6 flex flex-col justify-between" id="drawer-body">
+          <div class="h-full flex flex-col items-center justify-center text-center py-16 my-auto">
+            <span class="material-symbols-outlined text-4xl text-[#D8CCBC] mb-4">shopping_bag</span>
+            <p class="font-headline-sm text-headline-sm text-primary mb-1">Your bag is currently empty.</p>
+            <p class="font-body-sm text-on-surface-variant max-w-xs mb-8">Begin your sequence with our considered everyday essentials.</p>
+            <button onclick="toggleDrawer(false); navigateTo('shop');" class="px-8 py-3.5 bg-primary text-surface font-label-md text-label-md uppercase tracking-[0.16em] hover:bg-primary/90 transition-all">
+              Discover the Collection
+            </button>
+          </div>
+        </div>
+<!-- Drawer Footer (when bag is not empty) -->
+<div class="p-6 border-t border-[#D8CCBC]/40 bg-[#FAF8F5] space-y-4 hidden" id="drawer-footer">
+<div class="flex items-center justify-between font-headline-sm text-headline-sm text-primary">
+<span class="">Subtotal</span>
+<span id="drawer-subtotal" class="">$0</span>
+</div>
+<p class="font-label-sm text-label-sm uppercase tracking-wider text-outline text-center">Taxes &amp; complimentary shipping included at checkout</p>
+<button class="w-full py-4 bg-primary text-surface font-label-md text-label-md uppercase tracking-[0.18em] transition-all hover:bg-primary/90 focus:outline-none" onclick="proceedToCheckoutFromDrawer()">
+        Proceed to Checkout
+      </button>
+<button class="w-full py-2.5 text-center font-label-sm text-label-sm uppercase tracking-[0.14em] text-on-surface-variant hover:text-primary" onclick="toggleDrawer(false)">
+        Continue Shopping
+      </button>
+</div>
+</aside>
+<!-- SINGLE CLEAN FOOTER -->
+<footer class="w-full bg-surface pt-20 pb-0 border-t border-[#D8CCBC]/40">
+  <!-- Top section -->
+  <div class="w-full px-8 lg:px-16 max-w-[1440px] mx-auto">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
+      <!-- Left 2/3 (Cols 1-8) -->
+      <div class="lg:col-span-8 flex flex-col justify-start">
+        <span class="font-display text-6xl md:text-8xl lg:text-9xl tracking-[0.08em] text-[#292D29] leading-none mb-4 select-none">
+          SEREIN
+        </span>
+        <p class="font-headline-sm text-sm md:text-base text-secondary italic tracking-wide mb-10">
+          A quieter kind of care.
+        </p>
+        <!-- Nav Links -->
+        <div class="flex flex-wrap gap-8 font-label-md text-xs md:text-sm tracking-widest uppercase text-primary font-medium mb-4">
+          <button type="button" onclick="navigateTo('shop')" class="hover:opacity-70 transition-opacity">Shop</button>
+          <button type="button" onclick="scrollToSectionOrHome('brand-story')" class="hover:opacity-70 transition-opacity">Our Story</button>
+          <button type="button" onclick="scrollToSectionOrHome('ritual')" class="hover:opacity-70 transition-opacity">The Ritual</button>
+          <button type="button" onclick="showContactModal()" class="hover:opacity-70 transition-opacity">FAQ</button>
+        </div>
+        <!-- Social Links -->
+        <div class="flex gap-6 font-label-sm text-xs tracking-wider text-outline">
+          <a href="#" onclick="event.preventDefault()" class="hover:text-primary transition-colors">Instagram</a>
+          <a href="#" onclick="event.preventDefault()" class="hover:text-primary transition-colors">TikTok</a>
+        </div>
+      </div>
+      <!-- Right 1/3 (Newsletter area: Cols 9-12) -->
+      <div class="lg:col-span-4 flex flex-col justify-start lg:pl-4">
+        <h4 class="font-label-md text-sm tracking-wider uppercase font-medium text-primary mb-2">
+          Stay quietly informed
+        </h4>
+        <p class="font-body-sm text-xs text-outline mb-4">
+          Demo newsletter — no emails collected.
+        </p>
+        <form onsubmit="event.preventDefault(); showToast('Subscribed to Quiet Notes');" class="flex flex-col items-start w-full">
+          <input type="email" placeholder="Enter your email" class="bg-transparent border-b border-[#292D29] py-3 text-sm placeholder:text-outline focus:outline-none w-full" required="">
+          <button type="submit" class="border border-[#292D29] text-primary px-6 py-2.5 font-label-sm text-xs tracking-widest uppercase hover:bg-primary hover:text-surface transition-colors mt-4 self-start">
+            Subscribe
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+  <!-- Bottom Full-width Charcoal Bar -->
+  <div class="w-full bg-primary-container text-surface mt-16 py-4 px-8 lg:px-16 border-t border-[#292D29]/40">
+    <div class="max-w-[1440px] mx-auto flex flex-col md:flex-row items-center justify-between gap-3 font-label-sm text-xs text-surface-dim">
+      <div class="text-left w-full md:w-auto">
+        © SEREIN. All rights reserved.
+      </div>
+      <div class="text-center text-outline/80 w-full md:w-auto">
+        Fictional skincare brand. Portfolio demo. No purchases or payments.
+      </div>
+      <div class="text-left md:text-right w-full md:w-auto">
+        Designed as a portfolio project
+      </div>
+    </div>
+  </div>
+</footer>
+<!-- CONTACT MODAL -->
+<div class="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm hidden items-center justify-center p-4" id="contact-modal">
+<div class="bg-surface max-w-md w-full border border-[#D8CCBC]/50 p-6 sm:p-8 space-y-4">
+<div class="flex justify-between items-center pb-2 border-b border-[#D8CCBC]/40">
+<h3 class="font-headline-sm text-headline-sm text-primary">Contact SEREIN</h3>
+<button class="text-outline hover:text-primary" onclick="closeContactModal()"><span class="material-symbols-outlined">close</span></button>
+</div>
+<p class="font-body-md text-on-surface-variant">We welcome questions about formulation, layering sequence, or ritual care.</p>
+<div class="space-y-2 text-body-sm font-mono text-primary pt-2">
+<p class=""><strong>Concierge:</strong> atelier@serein-skincare.internal</p>
+<p class=""><strong>Studio:</strong> 42 Rue de Tournon, 75006 Paris</p>
+</div>
+<div class="pt-4 text-right">
+<button class="px-6 py-2.5 bg-primary text-surface font-label-md text-label-md uppercase tracking-wider" onclick="closeContactModal()">Close</button>
+</div>
+</div>
+</div>
+<!-- APPLICATION LOGIC -->
+<script>
+    // 1. DATA DEFINITIONS WITH DATASTORE PRODUCT IMAGES
+    const PRODUCTS = [
+      {
+        id: 'toner',
+        index: '01',
+        name: 'Balancing Toner',
+        subtitle: 'Clarifying Liquid',
+        size: '150 mL',
+        price: 34,
+        category: 'tone',
+        image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAGrVA3jOBuIxMasskGt_eYBJgIbxLbn_EWi_lKqlclz8OUAP7646kG6wv1rmf4maZVnzwOnxFmiHfLZhj70e2E_pYRMULBl3WKlZS1fmpHsEnsY7AffUcD4S7gSKwjxjcOe9pNcd6IyRPF6AErGlhKfnneZxfWzwRUIKJgo7pkV9Oeb27Y_bHaPhwTh8HlGsHV8x5Wz1_ODz28R2nCIGPx2xZ58jch2V8NP0O1IfS4iDySWk7Jz7wbJa9H_jVii6aTpw',
+        desc: 'A soothing clarifying liquid that balances and conditions skin barrier following daily cleansing.',
+        ritualStep: 'Step 02 — Tone',
+        usage: 'Sweep across clean face and neck with hands or organic cotton pad morning and evening.',
+        ingredients: 'Aqua, Camellia Sinensis Leaf Extract, Niacinamide, Glycerin, Sodium Hyaluronate, Panthenol, Phenoxyethanol.'
+      },
+      {
+        id: 'moisturizer',
+        index: '02',
+        name: 'Daily Moisturizer',
+        subtitle: 'Nourishing Cream',
+        size: '50 mL',
+        price: 42,
+        category: 'moisturize',
+        image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDdwomQpN-zf88FPY9D5Cye1JIT9SZzdMS3SN9wjFkXxSLIUfEJiWJhihGBv9A7nVdcf-Tdw7rqRCYRm2ykHA1HGyRnogCZCcfaDmpIkpzeyFjvnmFLuFsL0NJRcgYJDsy26aTO8LN4I1GVspzVsFoJs7k4ggPO3vIkhEutouFo7u0kEapxxoNyH7qlD1mnGfjs_zx56PZdewMs_EYf2GwcNKAee4r1CqDaXAAtHxNsxVkacE8Kb8IaVd3GlCyIwuerPA',
+        desc: 'A rich yet weightless cream delivering lasting hydration and essential lipid barrier nourishment.',
+        ritualStep: 'Step 04 — Moisturize',
+        usage: 'Warm a pea-sized amount between fingertips and gently press into face and décolletage.',
+        ingredients: 'Aqua, Squalane, Butyrospermum Parkii (Shea) Butter, Caprylic/Capric Triglyceride, Ceramide NP, Cetearyl Alcohol, Tocopherol.'
+      },
+      {
+        id: 'serum',
+        index: '03',
+        name: 'Still Serum',
+        subtitle: 'Hydrating Serum',
+        size: '30 mL',
+        price: 46,
+        category: 'treat',
+        image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBh40gkzu217HwcbWFTS4TKdC3IoEPqQjxFjTQtn1WXbiadaGMmUy7p7tgNXbJAITW8zbLSZ7lqC27QbM1ZuZ-XO3OxlJ-_zOJVn5_CcVFGslFp8IbzcVXnfvkCfSHk8BrlxonRbmh2rlj4NR4aE5mhCUTy0S3aTbuX0KU992P0J1-uh4nXG0MZValG-VIP2aJ6OVCooKdd8fn1JLAVqjR9iDVcK7fUqJ2oAINVYD24YOh1aVrxRc39OpB6b8dQa5UEiQ',
+        desc: 'Concentrated multi-depth hydration serum designed to calm and restore radiance to thirsty skin.',
+        ritualStep: 'Step 03 — Treat',
+        usage: 'Dispense 3–4 drops directly onto skin, pressing gently until fully absorbed before moisturizer.',
+        ingredients: 'Aqua, Sodium Hyaluronate, Centella Asiatica Extract, Beta-Glucan, Tremella Fuciformis Extract, Hydrolyzed Hyaluronic Acid.'
+      },
+      {
+        id: 'cleanser',
+        index: '04',
+        name: 'Gentle Cleanser',
+        subtitle: 'Balancing Wash',
+        size: '100 mL',
+        price: 28,
+        category: 'cleanse',
+        image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBA_tVj18ckqaAtVrbPxm4h-dkwgS397SfUGJAmbpq5sxUmVGy49rkXJFojPzmrbeJSC0cu8_sDgk1oKDZS5s1jH7qSUAaGGpIa_3v1jcz6d6EDOHDU4NtIe6egxpPAM1UX6ugC9J9-nSi8mqzm2XPu1p4JWXGDJjhtRiYRyuDiB3CPe6Jd0iQsUQ5TK5noNPvA-5lddhgxEilUR_Vm2bcJbUwNIK0VDXURv4NDTQWu7dX4p0jGlp_xlLjgyWymsidpQA',
+        desc: 'Mild non-foaming cream cleanser that lifts daily impurities while preserving delicate natural moisture.',
+        ritualStep: 'Step 01 — Cleanse',
+        usage: 'Massage 1–2 pumps onto damp skin with circular motions. Rinse thoroughly with lukewarm water.',
+        ingredients: 'Aqua, Cetyl Alcohol, Decyl Glucoside, Glycerin, Avena Sativa (Oat) Kernel Flour, Allantoin, Citric Acid.'
+      },
+      {
+        id: 'eye-contour',
+        index: '05',
+        name: 'Eye Contour',
+        subtitle: 'Smoothing Balm',
+        size: '15 mL',
+        price: 32,
+        category: 'eye-care',
+        image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBgbShmj_A6cXwEceDyQcTXXBk19-ZJ-opRPi3-hNZe1Jyx-NM4j-tX76MAVbDQ_rjsFKtrfCobevJrA1eAyNkXlFzBtklUvh2mqN6CnZHhAtYsAu4iJoQieqDrm8XEXq7_7NRER7kJVkfNSUQWLLuTj5xrjAdIFcEAF5l0hylec7ySglnbX5NJEHq9FVOKP8ZwHCE1B2Fs0JWieWwiXkRIgN-UcUy76WPsJW3BoIa_2nVIPRVxLJAADgUNnCcTuyKyeQ',
+        desc: 'Ultra-gentle smoothing balm targeted to revive fatigue, soften delicate lines, and brighten under-eyes.',
+        ritualStep: 'Step 05 — Eye care',
+        usage: 'Gently tap a pinhead amount along the orbital bone using your ring finger morning and evening.',
+        ingredients: 'Aqua, Simmondsia Chinensis Seed Oil, Caffeine, Palmitoyl Tripeptide-1, Peptides, Bisabolol, Vitamin E.'
+      }
+    ];
+
+    // STATE
+    let currentView = 'home';
+    let currentCategory = 'all';
+    let currentPDPProduct = PRODUCTS[0];
+    let pdpQuantity = 1;
+    let placedOrderSnapshot = null;
+
+    // LOCAL STORAGE BAG STATE
+    function loadBag() {
+      try {
+        const stored = localStorage.getItem('serein_bag');
+        return stored ? JSON.parse(stored) : [];
+      } catch (e) {
+        return [];
+      }
+    }
+
+    let bag = loadBag();
+
+    function saveBag() {
+      try {
+        localStorage.setItem('serein_bag', JSON.stringify(bag));
+      } catch (e) {}
+      updateBagUI();
+    }
+
+    // NAVIGATION
+    function navigateTo(viewName) {
+      currentView = viewName;
+      document.querySelectorAll('.page-view').forEach(el => {
+        el.classList.add('hidden');
+        el.classList.remove('flex');
+      });
+
+      const targetView = document.getElementById('view-' + viewName);
+      if (targetView) {
+        targetView.classList.remove('hidden');
+        targetView.classList.add('flex');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+
+      if (viewName === 'shop') {
+        renderShopProducts();
+      }
+
+      // Update Nav active classes
+      document.querySelectorAll('.nav-item').forEach(btn => {
+        btn.classList.remove('text-primary', 'font-medium', 'border-b', 'border-primary');
+        if (btn.dataset.nav === viewName) {
+          btn.classList.add('text-primary', 'font-medium');
+        }
+      });
+    }
+
+    function scrollToSectionOrHome(sectionId) {
+      if (currentView !== 'home') {
+        navigateTo('home');
+        setTimeout(() => {
+          const el = document.getElementById(sectionId);
+          if (el) el.scrollIntoView({ behavior: 'smooth' });
+        }, 120);
+      } else {
+        const el = document.getElementById(sectionId);
+        if (el) el.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+
+    function navigateToDetail(productId) {
+      const prod = PRODUCTS.find(p => p.id === productId);
+      if (!prod) return;
+      currentPDPProduct = prod;
+      pdpQuantity = 1;
+
+      // Populate PDP
+      document.getElementById('pdp-breadcrumb').innerText = prod.name;
+      document.getElementById('pdp-index').innerText = prod.index;
+      document.getElementById('pdp-image').src = prod.image;
+      document.getElementById('pdp-image').alt = prod.name;
+      document.getElementById('pdp-ritual-step').innerText = prod.ritualStep;
+      document.getElementById('pdp-title').innerText = prod.name;
+      document.getElementById('pdp-price').innerText = `$${prod.price}`;
+      document.getElementById('pdp-subtitle-size').innerText = `${prod.subtitle} • ${prod.size}`;
+      document.getElementById('pdp-desc').innerText = prod.desc;
+      document.getElementById('pdp-usage').innerText = prod.usage;
+      document.getElementById('pdp-ingredients').innerText = prod.ingredients;
+      document.getElementById('pdp-qty').innerText = pdpQuantity;
+
+      // Reset accordions closed
+      document.getElementById('acc-content-usage').classList.add('hidden');
+      document.getElementById('acc-content-ingredients').classList.add('hidden');
+      document.getElementById('acc-icon-usage').innerText = 'expand_more';
+      document.getElementById('acc-icon-ingredients').innerText = 'expand_more';
+
+      navigateTo('product-detail');
+    }
+
+    // ACCORDIONS
+    function toggleAccordion(name) {
+      const content = document.getElementById(`acc-content-${name}`);
+      const icon = document.getElementById(`acc-icon-${name}`);
+      const isHidden = content.classList.contains('hidden');
+      if (isHidden) {
+        content.classList.remove('hidden');
+        icon.innerText = 'expand_less';
+      } else {
+        content.classList.add('hidden');
+        icon.innerText = 'expand_more';
+      }
+    }
+
+    // PDP QUANTITY
+    function adjustPDPQty(delta) {
+      pdpQuantity = Math.max(1, pdpQuantity + delta);
+      document.getElementById('pdp-qty').innerText = pdpQuantity;
+    }
+
+    function addCurrentProductToBag() {
+      addToBag(currentPDPProduct.id, pdpQuantity);
+      toggleDrawer(true);
+    }
+
+    // BAG OPERATIONS
+    function addToBag(productId, quantity = 1) {
+      const prod = PRODUCTS.find(p => p.id === productId);
+      if (!prod) return;
+      const existing = bag.find(item => item.id === productId);
+      if (existing) {
+        existing.quantity += quantity;
+      } else {
+        bag.push({
+          id: prod.id,
+          name: prod.name,
+          subtitle: prod.subtitle,
+          size: prod.size,
+          price: prod.price,
+          image: prod.image,
+          quantity: quantity
+        });
+      }
+      saveBag();
+      showToast(`Added ${prod.name} to your bag`);
+    }
+
+    function updateBagItemQty(productId, delta) {
+      const index = bag.findIndex(item => item.id === productId);
+      if (index === -1) return;
+      bag[index].quantity += delta;
+      if (bag[index].quantity <= 0) {
+        bag.splice(index, 1);
+      }
+      saveBag();
+      if (currentView === 'checkout') renderCheckout();
+    }
+
+    function removeBagItem(productId) {
+      bag = bag.filter(item => item.id !== productId);
+      saveBag();
+      if (currentView === 'checkout') {
+        if (bag.length === 0) {
+          navigateTo('shop');
+          showToast('Your bag is now empty');
+        } else {
+          renderCheckout();
+        }
+      }
+    }
+
+    function updateBagUI() {
+      const totalCount = bag.reduce((sum, item) => sum + item.quantity, 0);
+      const subtotal = bag.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+
+      document.getElementById('bag-count').innerText = totalCount;
+      document.getElementById('drawer-item-count').innerText = totalCount;
+      document.getElementById('drawer-subtotal').innerText = `$${subtotal}`;
+
+      renderBagDrawer(subtotal);
+    }
+
+    function renderBagDrawer(subtotal) {
+      const drawerBody = document.getElementById('drawer-body');
+      const drawerFooter = document.getElementById('drawer-footer');
+
+      if (bag.length === 0) {
+        drawerFooter.classList.add('hidden');
+        drawerBody.innerHTML = `
+          <div class="h-full flex flex-col items-center justify-center text-center py-16 my-auto">
+            <span class="material-symbols-outlined text-4xl text-[#D8CCBC] mb-4">shopping_bag</span>
+            <p class="font-headline-sm text-headline-sm text-primary mb-1">Your bag is currently empty.</p>
+            <p class="font-body-sm text-on-surface-variant max-w-xs mb-8">Begin your sequence with our considered everyday essentials.</p>
+            <button onclick="toggleDrawer(false); navigateTo('shop');" class="px-8 py-3.5 bg-primary text-surface font-label-md text-label-md uppercase tracking-[0.16em] hover:bg-primary/90 transition-all">
+              Discover the Collection
+            </button>
+          </div>
+        `;
+      } else {
+        drawerFooter.classList.remove('hidden');
+        drawerBody.innerHTML = `
+          <div class="divide-y divide-[#D8CCBC]/40">
+            ${bag.map(item => `
+              <div class="py-4 flex gap-4 items-center">
+                <img src="${item.image}" alt="${item.name}" class="w-20 h-20 object-cover bg-surface-container border border-[#D8CCBC]/40"/>
+                <div class="flex-grow">
+                  <div class="flex justify-between items-start">
+                    <h4 class="font-headline-sm text-[17px] text-primary cursor-pointer hover:opacity-80" onclick="toggleDrawer(false); navigateToDetail('${item.id}')">${item.name}</h4>
+                    <span class="font-body-md text-primary font-medium">$${item.price * item.quantity}</span>
+                  </div>
+                  <p class="font-body-sm text-outline text-xs mt-0.5">${item.subtitle} • ${item.size}</p>
+                  
+                  <div class="flex items-center justify-between mt-3">
+                    <div class="flex items-center border border-[#292D29]/25 bg-surface">
+                      <button onclick="updateBagItemQty('${item.id}', -1)" class="w-7 h-7 flex items-center justify-center text-primary text-sm hover:bg-black/5 select-none" type="button">−</button>
+                      <span class="w-8 text-center font-body-sm text-primary">${item.quantity}</span>
+                      <button onclick="updateBagItemQty('${item.id}', 1)" class="w-7 h-7 flex items-center justify-center text-primary text-sm hover:bg-black/5 select-none" type="button">+</button>
+                    </div>
+                    <button onclick="removeBagItem('${item.id}')" class="text-xs uppercase tracking-wider text-outline hover:text-error transition-colors">
+                      Remove
+                    </button>
+                  </div>
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        `;
+      }
+    }
+
+    // DRAWER TOGGLE
+    function toggleDrawer(open) {
+      const drawer = document.getElementById('drawer');
+      const backdrop = document.getElementById('drawer-backdrop');
+      if (open) {
+        updateBagUI();
+        drawer.classList.remove('translate-x-full');
+        backdrop.classList.remove('opacity-0', 'pointer-events-none');
+        backdrop.classList.add('opacity-100');
+        document.body.style.overflow = 'hidden';
+      } else {
+        drawer.classList.add('translate-x-full');
+        backdrop.classList.remove('opacity-100');
+        backdrop.classList.add('opacity-0', 'pointer-events-none');
+        document.body.style.overflow = '';
+      }
+    }
+
+    // CHECKOUT
+    function proceedToCheckoutFromDrawer() {
+      toggleDrawer(false);
+      proceedToCheckout();
+    }
+
+    function proceedToCheckout() {
+      if (bag.length === 0) {
+        showToast('Your bag is empty');
+        navigateTo('shop');
+        return;
+      }
+      renderCheckout();
+      navigateTo('checkout');
+    }
+
+    function renderCheckout() {
+      const itemsList = document.getElementById('checkout-items-list');
+      const subtotal = bag.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+      
+      itemsList.innerHTML = bag.map(item => `
+        <div class="flex gap-3 items-center justify-between py-2 border-b border-[#D8CCBC]/20">
+          <div class="flex items-center gap-3">
+            <img src="${item.image}" alt="${item.name}" class="w-12 h-12 object-cover border border-[#D8CCBC]/40"/>
+            <div>
+              <p class="font-headline-sm text-sm text-primary">${item.name}</p>
+              <p class="font-body-sm text-xs text-outline">Qty: ${item.quantity} × $${item.price}</p>
+            </div>
+          </div>
+          <span class="font-body-sm font-medium text-primary">$${item.price * item.quantity}</span>
+        </div>
+      `).join('');
+
+      document.getElementById('checkout-subtotal').innerText = `$${subtotal}`;
+      document.getElementById('checkout-total').innerText = `$${subtotal}`;
+    }
+
+    function placeDemoOrder() {
+      if (bag.length === 0) return;
+      placedOrderSnapshot = [...bag];
+      const orderNumber = '#SRN-' + Math.floor(10000 + Math.random() * 90000);
+      document.getElementById('conf-order-id').innerText = orderNumber;
+
+      const confItems = document.getElementById('conf-items-list');
+      confItems.innerHTML = placedOrderSnapshot.map(item => `
+        <div class="flex justify-between items-center text-sm">
+          <span class="text-primary">${item.name} (${item.size}) × ${item.quantity}</span>
+          <span class="font-medium text-primary">$${item.price * item.quantity}</span>
+        </div>
+      `).join('');
+
+      // Clear bag
+      bag = [];
+      saveBag();
+      navigateTo('order-confirmation');
+    }
+
+    // SHOP PRODUCTS & CATEGORY FILTER
+    function setCategoryFilter(category) {
+      currentCategory = category;
+      document.querySelectorAll('.category-btn').forEach(btn => {
+        if (btn.dataset.cat === category) {
+          btn.classList.add('bg-primary', 'text-surface');
+          btn.classList.remove('bg-surface-container', 'text-on-surface-variant');
+        } else {
+          btn.classList.remove('bg-primary', 'text-surface');
+          btn.classList.add('bg-surface-container', 'text-on-surface-variant');
+        }
+      });
+      renderShopProducts();
+    }
+
+    function renderShopProducts() {
+      const grid = document.getElementById('shop-product-grid');
+      let filtered = currentCategory === 'all' 
+        ? [...PRODUCTS] 
+        : PRODUCTS.filter(p => p.category === currentCategory);
+
+      const sortVal = document.getElementById('shop-sort').value;
+      if (sortVal === 'price-asc') {
+        filtered.sort((a, b) => a.price - b.price);
+      } else if (sortVal === 'price-desc') {
+        filtered.sort((a, b) => b.price - a.price);
+      }
+
+      grid.innerHTML = filtered.map(prod => `
+        <div class="group flex flex-col bg-surface p-4 border border-[#D8CCBC]/35 hover:border-[#D8CCBC] transition-colors">
+          <div onclick="navigateToDetail('${prod.id}')" class="relative w-full aspect-square bg-[#F0ECE1]/60 flex items-center justify-center overflow-hidden mb-4 cursor-pointer">
+            <span class="absolute top-2.5 left-2.5 font-label-sm text-label-sm tracking-widest text-outline select-none">
+              ${prod.index}
+            </span>
+            <img alt="${prod.name}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" src="${prod.image}"/>
+          </div>
+          <div class="flex flex-col flex-grow justify-between">
+            <div onclick="navigateToDetail('${prod.id}')" class="cursor-pointer">
+              <div class="flex items-baseline justify-between gap-2">
+                <h3 class="font-headline-sm text-headline-sm text-primary group-hover:opacity-80 transition-opacity">${prod.name}</h3>
+                <span class="font-label-lg text-label-lg text-primary font-medium">$${prod.price}</span>
+              </div>
+              <p class="font-body-sm text-body-sm text-on-surface-variant mt-1">${prod.subtitle} • ${prod.size}</p>
+            </div>
+            <button onclick="addToBag('${prod.id}'); toggleDrawer(true);" class="w-full mt-4 py-2.5 px-3 border border-[#292D29]/25 hover:border-[#292D29] font-label-md text-label-md uppercase tracking-[0.16em] text-primary bg-transparent hover:bg-primary hover:text-surface transition-all select-none focus:outline-none" type="button">
+              Add to bag
+            </button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // HOME PRODUCT GRID
+    function renderHomeProducts() {
+      const grid = document.getElementById('home-product-grid');
+      grid.innerHTML = PRODUCTS.map(prod => `
+        <div class="group flex flex-col bg-surface p-4 border border-[#D8CCBC]/35 hover:border-[#D8CCBC] transition-colors">
+          <div onclick="navigateToDetail('${prod.id}')" class="relative w-full aspect-square bg-[#F0ECE1]/60 flex items-center justify-center overflow-hidden mb-4 cursor-pointer">
+            <span class="absolute top-2.5 left-2.5 font-label-sm text-label-sm tracking-widest text-outline select-none">
+              ${prod.index}
+            </span>
+            <img alt="${prod.name}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" src="${prod.image}"/>
+          </div>
+          <div class="flex flex-col flex-grow justify-between">
+            <div onclick="navigateToDetail('${prod.id}')" class="cursor-pointer">
+              <div class="flex items-baseline justify-between gap-2">
+                <h3 class="font-headline-sm text-headline-sm text-primary group-hover:opacity-80 transition-opacity">${prod.name}</h3>
+                <span class="font-label-lg text-label-lg text-primary font-medium">$${prod.price}</span>
+              </div>
+              <p class="font-body-sm text-body-sm text-on-surface-variant mt-1">${prod.subtitle} • ${prod.size}</p>
+            </div>
+            <button onclick="addToBag('${prod.id}'); toggleDrawer(true);" class="w-full mt-4 py-2.5 px-3 border border-[#292D29]/25 hover:border-[#292D29] font-label-md text-label-md uppercase tracking-[0.16em] text-primary bg-transparent hover:bg-primary hover:text-surface transition-all select-none focus:outline-none" type="button">
+              Add to bag
+            </button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // TOAST NOTIFICATIONS
+    function showToast(message) {
+      const container = document.getElementById('toast-container');
+      const toast = document.createElement('div');
+      toast.className = 'bg-primary text-surface px-4 py-3 rounded shadow-lg font-body-sm flex items-center gap-2 transform transition-all duration-300 opacity-90 translate-y-0';
+      toast.innerHTML = `<span class="material-symbols-outlined text-[16px] text-secondary-fixed">check_circle</span><span>${message}</span>`;
+      container.appendChild(toast);
+      setTimeout(() => {
+        toast.classList.add('opacity-0', 'translate-y-2');
+        setTimeout(() => toast.remove(), 300);
+      }, 2500);
+    }
+
+    // MODAL
+    function showContactModal() {
+      const modal = document.getElementById('contact-modal');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    }
+    function closeContactModal() {
+      const modal = document.getElementById('contact-modal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+
+    // INITIALIZATION
+    window.addEventListener('DOMContentLoaded', () => {
+      renderHomeProducts();
+      updateBagUI();
+      navigateTo('home');
+    });
+  </script>
+
+
+</body></html>

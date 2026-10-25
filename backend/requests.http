@@ -1,0 +1,55 @@
+@base = http://localhost:4000
+# Replace with a real Clerk session token when testing private routes.
+@token = REPLACE_WITH_CLERK_SESSION_TOKEN
+
+### Liveness
+GET {{base}}/health
+
+### Database readiness
+GET {{base}}/ready
+
+### English catalog
+GET {{base}}/api/v1/products?locale=en
+
+### Persian product
+GET {{base}}/api/v1/products/balancing-toner?locale=fa
+
+### Current account
+GET {{base}}/api/v1/account
+Authorization: Bearer {{token}}
+
+### Update profile
+PATCH {{base}}/api/v1/account
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{"displayName":"Alex Example"}
+
+### Set quantity (absolute, repeatable)
+PUT {{base}}/api/v1/cart/items/01
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{"quantity":2}
+
+### View cart
+GET {{base}}/api/v1/cart?locale=en
+Authorization: Bearer {{token}}
+
+### Persist a demo order. Reuse this key only to retry this exact checkout.
+POST {{base}}/api/v1/orders
+Authorization: Bearer {{token}}
+Content-Type: application/json
+Idempotency-Key: 6ba7b810-9dad-41d1-80b4-00c04fd430c8
+
+{"shipping":{"name":"Alex Example","email":"alex@example.com","address":"123 Example Street"}}
+
+### Order history
+GET {{base}}/api/v1/orders?page=1&limit=20&locale=en
+Authorization: Bearer {{token}}
+
+### Newsletter opt-in (storage only)
+POST {{base}}/api/v1/newsletter
+Content-Type: application/json
+
+{"email":"alex@example.com","locale":"en","consent":true}

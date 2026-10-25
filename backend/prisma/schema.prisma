@@ -1,0 +1,90 @@
+generator client {
+  provider = "prisma-client"
+  output = "../src/generated/prisma"
+  moduleFormat = "esm"
+  importFileExtension = "ts"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Product {
+  id String @id
+  slug String @unique
+  name String
+  nameFa String
+  subtitle String
+  subtitleFa String
+  description String
+  descriptionFa String
+  sizeMl Int
+  priceCents Int
+  image String
+  hover String
+  stock Int @default(100)
+  active Boolean @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  cartItems CartItem[]
+  orderItems OrderItem[]
+}
+
+model User {
+  id String @id
+  displayName String?
+  phone String?
+  address String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  cartItems CartItem[]
+  orders Order[]
+}
+
+model CartItem {
+  userId String
+  productId String
+  quantity Int
+  updatedAt DateTime @updatedAt
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id], onDelete: Restrict)
+  @@id([userId, productId])
+}
+
+model Order {
+  id String @id @default(uuid())
+  userId String
+  idempotencyKey String
+  requestHash String
+  status String @default("DEMO_CONFIRMED")
+  currency String @default("USD")
+  totalCents Int
+  shippingName String
+  shippingEmail String
+  shippingAddress String
+  createdAt DateTime @default(now())
+  user User @relation(fields: [userId], references: [id], onDelete: Restrict)
+  items OrderItem[]
+  @@unique([userId, idempotencyKey])
+  @@index([userId, createdAt])
+}
+
+model OrderItem {
+  id String @id @default(uuid())
+  orderId String
+  productId String
+  productName String
+  productNameFa String
+  image String
+  quantity Int
+  unitPriceCents Int
+  order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id], onDelete: Restrict)
+  @@index([orderId])
+}
+
+model NewsletterSubscriber {
+  email String @id
+  locale String @default("en")
+  consentedAt DateTime @default(now())
+}

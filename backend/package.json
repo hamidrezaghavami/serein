@@ -1,21 +1,53 @@
 {
-  "name": "backend",
+  "name": "serein-backend",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "devEngines": {
-    "packageManager": {
-      "name": "pnpm",
-      "version": "12.15.0",
-      "onFail": "download"
-    }
+  "private": true,
+  "type": "module",
+  "description": "SEREIN bilingual storefront API \u2014 portfolio demo",
+  "engines": {
+    "node": ">=22.12.0 <23 || >=24.0.0"
   },
   "packageManager": "pnpm@12.15.0",
-  "type": "module"
+  "scripts": {
+    "dev": "tsx watch src/server.ts",
+    "build": "prisma generate && tsc -p tsconfig.json",
+    "start": "node dist/server.js",
+    "typecheck": "prisma generate && tsc --noEmit -p tsconfig.check.json",
+    "test": "prisma generate && vitest run",
+    "test:watch": "vitest",
+    "db:generate": "prisma generate",
+    "db:validate": "prisma validate",
+    "db:migrate": "prisma migrate dev",
+    "db:deploy": "prisma migrate deploy",
+    "db:seed": "prisma db seed",
+    "db:studio": "prisma studio",
+    "repo:configure": "node scripts/configure-repo.mjs",
+    "db:restock": "tsx prisma/restock.ts"
+  },
+  "dependencies": {
+    "@clerk/backend": "3.26.2",
+    "@prisma/adapter-pg": "7.10.1",
+    "@prisma/client": "7.10.1",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
+    "express-rate-limit": "^8.2.1",
+    "helmet": "^8.1.0",
+    "pg": "^8.16.3",
+    "zod": "^4.1.12"
+  },
+  "devDependencies": {
+    "@electric-sql/pglite": "0.5.11",
+    "pglite-prisma-adapter": "0.7.2",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.5",
+    "@types/node": "^22.19.0",
+    "@types/pg": "^8.15.6",
+    "jose": "^6.1.0",
+    "node-mocks-http": "^1.17.2",
+    "prisma": "7.10.1",
+    "tsx": "^4.20.6",
+    "typescript": "5.9.3",
+    "vitest": "4.0.18"
+  }
 }

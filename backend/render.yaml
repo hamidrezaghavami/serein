@@ -1,0 +1,26 @@
+# Select this file from your repository's backend/ folder when creating a Blueprint.
+# Database and Clerk credentials are supplied in the Render dashboard, never here.
+services:
+  - type: web
+    name: serein-api
+    runtime: node
+    plan: free
+    rootDir: backend
+    buildCommand: pnpm install --frozen-lockfile --prod=false && pnpm build
+    startCommand: pnpm db:deploy && pnpm db:seed && pnpm start
+    healthCheckPath: /ready
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: NODE_VERSION
+        value: "22"
+      - key: TRUST_PROXY_HOPS
+        value: "1"
+      - key: DATABASE_URL
+        sync: false
+      - key: FRONTEND_ORIGINS
+        sync: false
+      - key: CLERK_JWT_KEY
+        sync: false
+      - key: CLERK_ISSUER
+        sync: false
